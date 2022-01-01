@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.assignment3.fragments.Login;
+import com.example.assignment3.utilities.Utility;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -16,10 +18,10 @@ public class Authentication extends AppCompatActivity implements IAuthentication
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
-        getSupportActionBar().hide();
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        Log.i("Authentication", Utility.genUID("KxRYaqUyYvQtotwti1cTNf7Qkiz2", "P2Es3qrx8ufzhWSGT8tXCX9rewz1"));
 
         //add map fragment to activity
         Fragment loginFragment = new Login();
