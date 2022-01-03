@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Chanjeong Park/AndroidStudioProjects/Assignment3/app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/Chanjeong Park/AndroidStudioProjects/Assignment3/app/src/main/res/layout/activity_update_data.xml" value="0.12335359675785208" />
         <entry key="app/src/main/res/drawable-anydpi/ic_arrow_back.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_email.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_email_focused.xml" value="0.28055555555555556" />
