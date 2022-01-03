@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable-anydpi/ic_location_city_focused.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable-anydpi/ic_person.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable-anydpi/ic_person_focused.xml" value="0.2111111111111111" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_plus_bottom_nav.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/drawable-anydpi/ic_send_message.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/drawable-anydpi/ic_thumb_up.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable-anydpi/rounded_icon.xml" value="0.23177083333333334" />
@@ -46,6 +47,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2579710144927536" />
         <entry key="app/src/main/res/layout/fragment_chat_room.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/item_chat_room.xml" value="0.335" />
@@ -53,6 +55,7 @@
         <entry key="app/src/main/res/layout/item_message_right.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.335" />
         <entry key="app/src/main/res/layout/loading_progress.xml" value="0.24444444444444444" />
+        <entry key="app/src/main/res/menu/navigation_items.xml" value="0.17708333333333334" />
       </map>
     </option>
   </component>
