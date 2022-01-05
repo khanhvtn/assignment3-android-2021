@@ -103,10 +103,8 @@ public class Chat extends Fragment {
 
         //get listener
         listener = (IChatManagement) getActivity();
-        //start notification
-//        new NotificationFollower(this).start();
 
-//create temporary image
+        //create temporary image
         File newFile = new File(getContext().getFilesDir(), "default_image.jpg");
         imageUri = FileProvider
                 .getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", newFile);

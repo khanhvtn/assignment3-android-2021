@@ -1,6 +1,7 @@
 package com.example.assignment3.homescreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.bumptech.glide.Glide;
+import com.example.assignment3.CommentActivity;
 import com.example.assignment3.R;
 import com.example.assignment3.models.Like;
 import com.example.assignment3.models.Message;
@@ -63,6 +65,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
     protected void onBindViewHolder(@NonNull
                                             PostViewHolder viewHolder, int position,
                                     @NonNull Post post) {
+
 
         //set poster info
         if (post.getPosterImageFileName() != null) {
@@ -172,7 +175,9 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
         viewHolder.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastMessage("Go to Comment Activity");
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postId", post.getPosterId());
+                context.startActivity(intent);
             }
         });
 

@@ -42,7 +42,7 @@ public class Utility {
         } else if (p.getMinutes() > 0) {
             return p.getMinutes() + "m ago";
         } else {
-            return p.getSeconds() == 0 ? "1s ago" : p.getSeconds() + "s ago";
+            return p.getSeconds() <= 0 ? "1s ago" : p.getSeconds() + "s ago";
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.assignment3.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.assignment3.ChatActivity;
 import com.example.assignment3.R;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Post;
@@ -24,6 +27,7 @@ public class Home extends Fragment {
     private RecyclerView home_rvPost;
     private LinearLayoutManager mLinearLayoutManager;
     private PostAdapter postAdapter;
+    private AppCompatImageButton home_btnMessages;
 
     public Home() {
         // Required empty public constructor
@@ -48,10 +52,11 @@ public class Home extends Fragment {
         //declare field
         home_rvPost = view.findViewById(R.id.home_rvPosts);
         home_rvPost.setLayoutManager(mLinearLayoutManager);
+        home_btnMessages = view.findViewById(R.id.home_btnMessages);
 
         //create query
         Query query = Utility.firebaseFirestore.collection(getString(R.string.post_collection))
-                .orderBy("timestamp").limit(100);
+                .orderBy("timestamp").limitToLast(100);
 
         // Configure recycler adapter options:
         //  * query is the Query object defined above.
@@ -63,6 +68,15 @@ public class Home extends Fragment {
         postAdapter = new PostAdapter(options, getContext());
         //set adapter and layout manager for RecyclerView
         home_rvPost.setAdapter(postAdapter);
+
+        //set listener
+        home_btnMessages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 }

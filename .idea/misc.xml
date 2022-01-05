@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/drawable/custom_lock_icon.xml" value="0.2777777777777778" />
         <entry key="app/src/main/res/drawable/custom_person_icon.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable/custom_user_name_icon.xml" value="0.29444444444444445" />
+        <entry key="app/src/main/res/drawable/gradient_bg.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/drawable/gradient_color_background.xml" value="0.13703703703703704" />
         <entry key="app/src/main/res/drawable/ic_baseline_email.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/ic_baseline_email_focused.xml" value="0.29444444444444445" />
@@ -41,11 +42,15 @@
         <entry key="app/src/main/res/drawable/rounded_icon_border.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/top_shadow.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.26296296296296295" />
+        <entry key="app/src/main/res/layout/activity_comment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.18697916666666667" />
+        <entry key="app/src/main/res/layout/fragment_chat_room.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/item_chat_room.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/item_comment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_post.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/loading_progress.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/menu/navigation_items.xml" value="0.30462962962962964" />

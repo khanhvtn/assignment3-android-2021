@@ -17,7 +17,7 @@
             android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_person" />
+            android:src="@drawable/ic_person"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -52,11 +52,10 @@
         android:paddingHorizontal="15dp">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:textColor="@color/black"
             android:id="@+id/textContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="“If you think you are too small to make a difference, try sleeping with a mosquito.”
-~ Dalai Lama"
             android:textSize="20dp"
             android:visibility="gone" />
 
