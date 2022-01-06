@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_homepage">
+    tools:context=".ViewPostActivity">
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
@@ -19,6 +19,7 @@
           <RelativeLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
               <ImageView
                   android:layout_width="180dp"
                   android:layout_height="35dp"
@@ -43,10 +44,10 @@
   </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_post_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bar"
-        android:id="@+id/recycler_view">
+        android:layout_below="@id/bar">
 
     </androidx.recyclerview.widget.RecyclerView>
 

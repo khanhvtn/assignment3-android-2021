@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         AppCompatButton btnLogout = findViewById(R.id.main_btnLogout);
         AppCompatButton btnChatRoom = findViewById(R.id.main_btnChatRoom);
         AppCompatButton btnCreatePost = findViewById(R.id.main_btnCreatePost);
+        AppCompatButton btnViewPost = findViewById(R.id.main_btnViewPost);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +44,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(view.getContext(), PostActivity.class));
             }
         });
+        btnViewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), ViewPostActivity.class));
+            }
+        });
+
     }
 }

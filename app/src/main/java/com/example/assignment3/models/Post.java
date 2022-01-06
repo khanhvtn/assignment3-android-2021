@@ -18,6 +18,17 @@ public class Post {
         this.uidUser = uidUser;
     }
 
+    public Post() { }
+
+    public Post(String content, String uidUser, String imgUrl, Date timeStamp, Long reaction, List<Comment> comments) {
+        this.content = content;
+        this.uidUser = uidUser;
+        this.imgUrl = imgUrl;
+        this.timeStamp = timeStamp;
+        this.reaction = reaction;
+        this.comments = comments;
+    }
+
     public String getContent() {
         return content;
     }

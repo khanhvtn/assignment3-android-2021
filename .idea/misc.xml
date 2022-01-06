@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/drawable/ic_inbox.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/drawable/ic_like.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/drawable/ic_save_post.xml" value="0.1" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/activity_authentication.xml" value="0.30842391304347827" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/fragment_homepage.xml" value="0.4" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/fragment_login.xml" value="0.30842391304347827" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/fragment_register.xml" value="0.30842391304347827" />
+        <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/fragment_view_post.xml" value="0.4" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/homepage_display_post.xml" value="0.4" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/item_chat_room.xml" value="0.4" />
         <entry key="..\:/Users/quoct/Desktop/Projects/assignment3-android-2021/app/src/main/res/layout/item_user.xml" value="0.30842391304347827" />
