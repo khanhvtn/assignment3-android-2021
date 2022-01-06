@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    tools:context=".fragments.Home">
+
+    <RelativeLayout
+        android:paddingHorizontal="15dp"
+        android:id="@+id/home_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="Good Morning, RMIT University"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/home_btnMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rounded_icon_border"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_email" />
+        <View
+            android:visibility="gone"
+            android:id="@+id/home_unreadMessageDot"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/gradient_bg"
+            android:layout_width="8dp"
+            android:layout_height="8dp"/>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_rvPosts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/home_title"
+        tools:listitem="@layout/item_post" />
+
+
+</RelativeLayout>

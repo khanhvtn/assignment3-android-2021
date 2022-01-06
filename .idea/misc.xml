@@ -3,24 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable-anydpi/ic_arrow_back.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/MyPC/Desktop/assignment3-android-2021-develop/assignment3-android-2021-develop/app/src/main/res/layout/activity_authentication.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/MyPC/Desktop/assignment3-android-2021-develop/assignment3-android-2021-develop/app/src/main/res/layout/activity_homepage.xml" value="0.4" />
+        <entry key="..\:/Users/MyPC/Desktop/assignment3-android-2021-develop/assignment3-android-2021-develop/app/src/main/res/layout/fragment_homepage.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/MyPC/Desktop/assignment3-android-2021-develop/assignment3-android-2021-develop/app/src/main/res/layout/fragment_login.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/MyPC/Desktop/assignment3-android-2021-develop/assignment3-android-2021-develop/app/src/main/res/layout/homepage_display_post.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_email.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_email_focused.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_lock.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-anydpi/ic_baseline_lock_focused.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_comment.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable-anydpi/ic_location_city.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable-anydpi/ic_location_city_focused.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable-anydpi/ic_person.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable-anydpi/ic_person_focused.xml" value="0.2111111111111111" />
-        <entry key="app/src/main/res/drawable-anydpi/ic_send_message.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/drawable-anydpi/ic_thumb_up.xml" value="0.18802083333333333" />
-        <entry key="app/src/main/res/drawable-anydpi/rounded_icon.xml" value="0.23177083333333334" />
-        <entry key="app/src/main/res/drawable-anydpi/rounded_icon_border.xml" value="0.23177083333333334" />
-        <entry key="app/src/main/res/drawable-mdpi/border_chat_input.xml" value="0.17395833333333333" />
-        <entry key="app/src/main/res/drawable-mdpi/message_right.xml" value="0.13385416666666666" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_plus_bottom_nav.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_thumb_up.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_thumb_up_liked.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_thumb_up_outline.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable-mdpi/border_chat_input.xml" value="0.19114583333333332" />
         <entry key="app/src/main/res/drawable-v24/custom_email_icon.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-v24/custom_input.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/drawable-v24/custom_lock_icon.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/drawable/border_post_item.xml" value="0.19114583333333332" />
         <entry key="app/src/main/res/drawable/custom_button.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/custom_email_icon.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.31145833333333334" />
@@ -28,31 +33,27 @@
         <entry key="app/src/main/res/drawable/custom_lock_icon.xml" value="0.2777777777777778" />
         <entry key="app/src/main/res/drawable/custom_person_icon.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/drawable/custom_user_name_icon.xml" value="0.29444444444444445" />
-        <entry key="app/src/main/res/drawable/gradient_bg.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/drawable/gradient_bg.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/drawable/gradient_color_background.xml" value="0.13703703703703704" />
         <entry key="app/src/main/res/drawable/ic_baseline_email.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/ic_baseline_email_focused.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/ic_baseline_lock.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/drawable/ic_baseline_lock_focused.xml" value="0.13703703703703704" />
-        <entry key="app/src/main/res/drawable/message_bg_left.xml" value="0.13385416666666666" />
-        <entry key="app/src/main/res/drawable/message_bg_right.xml" value="0.13385416666666666" />
-        <entry key="app/src/main/res/drawable/rounded_icon.xml" value="0.23177083333333334" />
-        <entry key="app/src/main/res/drawable/rouned_icon.xml" value="0.18645833333333334" />
-        <entry key="app/src/main/res/drawable/search_input_view.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable/rounded_icon_border.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/top_shadow.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.26296296296296295" />
-        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.1578125" />
-        <entry key="app/src/main/res/layout/activity_chat2.xml" value="0.18796296296296297" />
-        <entry key="app/src/main/res/layout/activity_chat_room.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.29583333333333334" />
-        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2579710144927536" />
-        <entry key="app/src/main/res/layout/fragment_chat_room.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_comment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.18697916666666667" />
+        <entry key="app/src/main/res/layout/fragment_chat_room.xml" value="0.18697916666666667" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.26296296296296295" />
-        <entry key="app/src/main/res/layout/item_chat_room.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_message_left.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_message_right.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_user.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_chat_room.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/item_comment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_post.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/loading_progress.xml" value="0.24444444444444444" />
+        <entry key="app/src/main/res/menu/navigation_items.xml" value="0.30462962962962964" />
       </map>
     </option>
   </component>

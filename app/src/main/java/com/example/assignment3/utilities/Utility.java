@@ -12,14 +12,39 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+
+import org.joda.time.Instant;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Utility {
     private static final String TAG = "Utility";
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private static FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public static FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    public static FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    //convert image to byte array
+    static public String calculateDifferentWithCurrentTime(Date date) {
+        //set timestamp for chatroom
+        Period p = new Period(date.getTime(),
+                Instant.now().toDate().getTime());
+        if (p.getDays() > 0) {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+            return dtf.print(date.getTime());
+        } else if (p.getHours() > 0) {
+            return p.getHours() + "h ago";
+        } else if (p.getMinutes() > 0) {
+            return p.getMinutes() + "m ago";
+        } else {
+            return p.getSeconds() <= 0 ? "1s ago" : p.getSeconds() + "s ago";
+        }
+    }
 
     //convert image to byte array
     static public byte[] convertImageToArrayByte(Bitmap image) {
@@ -40,9 +65,9 @@ public class Utility {
 
     /**
      * Auto generate chat room when a user follows other.
-     * */
+     */
 
-    static public void autoCreateRoomChat(String roomID, String authorID){
+    static public void autoCreateRoomChat(String roomID, String authorID) {
         firebaseFirestore.collection("chats")
                 .whereEqualTo("roomID", roomID)
                 .get()
@@ -51,7 +76,8 @@ public class Utility {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
-                                ChatRoom chatRoom = new ChatRoom(roomID, Arrays.asList(currentUser.getUid(), authorID));
+                                ChatRoom chatRoom = new ChatRoom(roomID,
+                                        Arrays.asList(currentUser.getUid(), authorID));
                                 firebaseFirestore.collection("chats")
                                         .document(roomID)
                                         .set(chatRoom)

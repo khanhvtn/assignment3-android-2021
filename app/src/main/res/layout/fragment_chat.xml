@@ -100,9 +100,9 @@
                     android:layout_height="50dp"
                     android:background="@drawable/search_input_view"
                     android:hint="Type your message here..."
+                    android:paddingVertical="5dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="100dp"
-                    android:paddingVertical="5dp"
                     android:textFontWeight="1" />
 
                 <ImageButton
