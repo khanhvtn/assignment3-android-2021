@@ -1,7 +1,10 @@
 package com.example.assignment3.utilities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -27,7 +30,13 @@ public class Utility {
     private static final String TAG = "Utility";
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    public static FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    static public void ToastMessage(String message, Context context) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 
     //convert image to byte array
     static public String calculateDifferentWithCurrentTime(Date date) {
@@ -77,7 +86,8 @@ public class Utility {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
                                 ChatRoom chatRoom = new ChatRoom(roomID,
-                                        Arrays.asList(currentUser.getUid(), authorID));
+                                        Arrays.asList(firebaseAuth.getCurrentUser().getUid(),
+                                                authorID));
                                 firebaseFirestore.collection("chats")
                                         .document(roomID)
                                         .set(chatRoom)

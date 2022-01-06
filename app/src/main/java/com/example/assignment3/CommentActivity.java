@@ -3,7 +3,6 @@ package com.example.assignment3;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -11,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,15 +19,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment3.comment.CommentAdapter;
 import com.example.assignment3.models.Comment;
 import com.example.assignment3.models.Like;
-import com.example.assignment3.models.Message;
 import com.example.assignment3.models.Post;
+import com.example.assignment3.models.User;
 import com.example.assignment3.utilities.Utility;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,14 +35,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -98,18 +93,56 @@ public class CommentActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Post targetPost = documentSnapshot.toObject(Post.class);
-                        cm_namePoster.setText(targetPost.getPosterName());
-                        cm_postTimestamp.setText(Utility.calculateDifferentWithCurrentTime(
-                                targetPost.getTimestamp()));
                         //set poster image
-                        Utility.firebaseStorage.getReference()
-                                .child("images/" + targetPost.getPosterImageFileName())
-                                .getDownloadUrl().addOnSuccessListener(
-                                new OnSuccessListener<Uri>() {
+                        Utility.firebaseFirestore.collection(getString(R.string.user_collection))
+                                .document(targetPost.getUserId()).get().addOnSuccessListener(
+                                new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
-                                    public void onSuccess(Uri uri) {
-                                        Glide.with(CommentActivity.this).load(uri)
-                                                .into(cm_imagePoster);
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        User user = documentSnapshot.toObject(User.class);
+                                        if (user.getImageFileName() != null) {
+                                            Utility.firebaseStorage.getReference()
+                                                    .child("images/" + user.getImageFileName())
+                                                    .getDownloadUrl()
+                                                    .addOnSuccessListener(
+                                                            new OnSuccessListener<Uri>() {
+                                                                @Override
+                                                                public void onSuccess(Uri uri) {
+                                                                    Glide.with(
+                                                                            getApplicationContext())
+                                                                            .load(uri)
+                                                                            .into(cm_imagePoster);
+                                                                }
+                                                            })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(
+                                                                @NonNull Exception e) {
+                                                            Log.e(TAG, e.getMessage());
+                                                            ToastMessage(e.getMessage());
+                                                        }
+                                                    });
+                                        }
+                                        cm_namePoster
+                                                .setText(user.getFullName());
+                                        cm_namePoster
+                                                .setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        //not profile
+                                                        if (!Utility.firebaseAuth.getCurrentUser().getUid()
+                                                                .equals(targetPost.getUserId())) {
+                                                            Intent intent =
+                                                                    new Intent(
+                                                                            getApplicationContext(),
+                                                                            UserProfileActivity.class);
+                                                            intent.putExtra("userId",
+                                                                    documentSnapshot.getId());
+                                                            startActivity(intent);
+                                                        }
+
+                                                    }
+                                                });
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -118,6 +151,9 @@ public class CommentActivity extends AppCompatActivity {
                                 ToastMessage(e.getMessage());
                             }
                         });
+
+                        cm_postTimestamp.setText(Utility.calculateDifferentWithCurrentTime(
+                                targetPost.getTimestamp()));
 
                         //set post content
                         if (targetPost.getTextContent() != null) {
@@ -131,7 +167,7 @@ public class CommentActivity extends AppCompatActivity {
                                     new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
-                                            Glide.with(CommentActivity.this).load(uri)
+                                            Glide.with(getApplicationContext()).load(uri)
                                                     .into(cm_imageContent);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -249,7 +285,7 @@ public class CommentActivity extends AppCompatActivity {
                 Utility.firebaseFirestore.collection(getString(R.string.post_collection))
                         .document(postId)
                         .collection(getString(R.string.like_collection))
-                        .whereEqualTo("userId", Utility.currentUser.getUid()).get()
+                        .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid()).get()
                         .addOnSuccessListener(
                                 new OnSuccessListener<QuerySnapshot>() {
                                     @Override
@@ -259,7 +295,7 @@ public class CommentActivity extends AppCompatActivity {
                                                     .collection(getString(R.string.post_collection))
                                                     .document(postId)
                                                     .collection(getString(R.string.like_collection))
-                                                    .add(new Like(Utility.currentUser.getUid()))
+                                                    .add(new Like(Utility.firebaseAuth.getCurrentUser().getUid()))
                                                     .addOnSuccessListener(
                                                             new OnSuccessListener<DocumentReference>() {
                                                                 @Override
@@ -330,12 +366,21 @@ public class CommentActivity extends AppCompatActivity {
         //create query for comment
         Query query = Utility.firebaseFirestore.collection(getString(R.string.post_collection))
                 .document(postId)
-                .collection(getString(R.string.comment_collection)).orderBy("timestamp").limit(100);
+                .collection(getString(R.string.comment_collection))
+                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
         FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
                 .setQuery(query, Comment.class)
                 .setLifecycleOwner(this)
                 .build();
         commentAdapter = new CommentAdapter(options, this, postId);
+        //scroll to newest comment
+        commentAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                cm_rvComment.scrollToPosition(0);
+            }
+        });
 
         //set adapter for recycler view
         cm_rvComment.setAdapter(commentAdapter);
@@ -345,7 +390,7 @@ public class CommentActivity extends AppCompatActivity {
         Utility.firebaseFirestore.collection(getString(R.string.post_collection))
                 .document(postId)
                 .collection(getString(R.string.like_collection))
-                .whereEqualTo("userId", Utility.currentUser.getUid()).addSnapshotListener(
+                .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid()).addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,

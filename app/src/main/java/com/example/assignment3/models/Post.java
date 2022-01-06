@@ -5,20 +5,28 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 public class Post {
-    private String posterId,posterImageFileName,posterName, textContent, imageContentFileName;
+    private String userId, posterId, textContent,
+            imageContentFileName;
     private Date timestamp;
 
     public Post() {
     }
 
-    public Post(String posterId, String posterImageFileName, String posterName,
+    public Post(String userId, String posterId,
                 String textContent, String imageContentFileName, Date timestamp) {
+        this.userId = userId;
         this.posterId = posterId;
-        this.posterImageFileName = posterImageFileName;
-        this.posterName = posterName;
         this.textContent = textContent;
         this.imageContentFileName = imageContentFileName;
         this.timestamp = timestamp;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPosterId() {
@@ -29,21 +37,6 @@ public class Post {
         this.posterId = posterId;
     }
 
-    public String getPosterImageFileName() {
-        return posterImageFileName;
-    }
-
-    public void setPosterImageFileName(String posterImageFileName) {
-        this.posterImageFileName = posterImageFileName;
-    }
-
-    public String getPosterName() {
-        return posterName;
-    }
-
-    public void setPosterName(String posterName) {
-        this.posterName = posterName;
-    }
 
     public String getTextContent() {
         return textContent;

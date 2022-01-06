@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.assignment3.ChatActivity;
+import com.example.assignment3.IMainManagement;
 import com.example.assignment3.R;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Post;
@@ -28,6 +29,7 @@ public class Home extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private PostAdapter postAdapter;
     private AppCompatImageButton home_btnMessages;
+    private IMainManagement listener;
 
     public Home() {
         // Required empty public constructor
@@ -49,6 +51,9 @@ public class Home extends Fragment {
         //create instance for views
         mLinearLayoutManager = new LinearLayoutManager(getContext());
 
+        //get listener;
+        listener = (IMainManagement) getActivity();
+
         //declare field
         home_rvPost = view.findViewById(R.id.home_rvPosts);
         home_rvPost.setLayoutManager(mLinearLayoutManager);
@@ -56,7 +61,7 @@ public class Home extends Fragment {
 
         //create query
         Query query = Utility.firebaseFirestore.collection(getString(R.string.post_collection))
-                .orderBy("timestamp").limitToLast(100);
+                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
 
         // Configure recycler adapter options:
         //  * query is the Query object defined above.
@@ -65,9 +70,18 @@ public class Home extends Fragment {
                 .setQuery(query, Post.class)
                 .setLifecycleOwner(this)
                 .build();
-        postAdapter = new PostAdapter(options, getContext());
+        postAdapter = new PostAdapter(options, getContext(), listener);
+        //scroll to newest post
+        postAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                home_rvPost.scrollToPosition(0);
+            }
+        });
         //set adapter and layout manager for RecyclerView
         home_rvPost.setAdapter(postAdapter);
+
 
         //set listener
         home_btnMessages.setOnClickListener(new View.OnClickListener() {
