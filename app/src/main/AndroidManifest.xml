@@ -31,6 +31,9 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

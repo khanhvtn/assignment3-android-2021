@@ -9,35 +9,44 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:textStyle="bold"
-        android:textSize="35dp"
-        android:textColor="@color/deep_pink"
         android:fontFamily="cursive"
-        android:text="Update profile" />
+        android:text="Update profile"
+        android:textColor="@color/deep_pink"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/existingnamelayout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:hint="Existing Name">
+        android:orientation="vertical"
+        android:padding="10dp"                  >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/existingFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:id="@+id/image_profile"             />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="Change Profile Photo"
+        android:id="@+id/textView_change"           />
+
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fullnamelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/existingnamelayout"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="150dp"
         android:hint="Full name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -89,6 +98,14 @@
         android:layout_centerHorizontal="true"
         android:paddingBottom="10dp"
         android:text="Update" />
+
+    <Button
+        android:id="@+id/homebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/updatebtn"
+        android:text="Home"/>
 
 
 
