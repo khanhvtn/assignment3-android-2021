@@ -67,7 +67,6 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                                             PostViewHolder viewHolder, int position,
                                     @NonNull Post post) {
 
-
         //set poster info
         Utility.firebaseFirestore.collection(context.getString(R.string.user_collection))
                 .document(post.getUserId()).get().addOnSuccessListener(
@@ -82,7 +81,8 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                                             new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri) {
-                                                    Glide.with(context.getApplicationContext()).load(uri)
+                                                    Glide.with(context.getApplicationContext())
+                                                            .load(uri)
                                                             .into(viewHolder.imagePoster);
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
@@ -100,7 +100,8 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                             public void onClick(View view) {
                                 //not profile
                                 if (listener != null) {
-                                    if (Utility.firebaseAuth.getCurrentUser().getUid().equals(post.getUserId())) {
+                                    if (Utility.firebaseAuth.getCurrentUser().getUid()
+                                            .equals(post.getUserId())) {
                                         listener.switchToProfile();
                                     } else {
                                         Intent intent =
@@ -121,8 +122,10 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
             }
         });
 
-        viewHolder.postTimestamp
-                .setText(Utility.calculateDifferentWithCurrentTime(post.getTimestamp()));
+        if (post.getTimestamp() != null) {
+            viewHolder.postTimestamp
+                    .setText(Utility.calculateDifferentWithCurrentTime(post.getTimestamp()));
+        }
 
         //set content
         if (post.getTextContent() != null) {
@@ -138,7 +141,8 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                     new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Glide.with(context.getApplicationContext()).load(uri).into(viewHolder.imageContent);
+                            Glide.with(context.getApplicationContext()).load(uri)
+                                    .into(viewHolder.imageContent);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -154,7 +158,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
             @Override
             public void onClick(View view) {
                 firebaseFirestore.collection(context.getString(R.string.post_collection))
-                        .document(post.getPosterId())
+                        .document(post.getPostId())
                         .collection(context.getString(R.string.like_collection))
                         .whereEqualTo("userId", currentUser.getUid()).get().addOnSuccessListener(
                         new OnSuccessListener<QuerySnapshot>() {
@@ -163,7 +167,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                                 if (queryDocumentSnapshots.isEmpty()) {
                                     firebaseFirestore
                                             .collection(context.getString(R.string.post_collection))
-                                            .document(post.getPosterId())
+                                            .document(post.getPostId())
                                             .collection(context.getString(R.string.like_collection))
                                             .add(new Like(currentUser.getUid()))
                                             .addOnSuccessListener(
@@ -186,7 +190,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                                             queryDocumentSnapshots.getDocuments().get(0).getId();
                                     firebaseFirestore
                                             .collection(context.getString(R.string.post_collection))
-                                            .document(post.getPosterId())
+                                            .document(post.getPostId())
                                             .collection(context.getString(R.string.like_collection))
                                             .document(targetLikedId).delete().addOnSuccessListener(
                                             new OnSuccessListener<Void>() {
@@ -211,14 +215,14 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentActivity.class);
-                intent.putExtra("postId", post.getPosterId());
+                intent.putExtra("postId", post.getPostId());
                 context.startActivity(intent);
             }
         });
 
         //check current user liked post or not
         firebaseFirestore.collection(context.getString(R.string.post_collection))
-                .document(post.getPosterId())
+                .document(post.getPostId())
                 .collection(context.getString(R.string.like_collection))
                 .whereEqualTo("userId", currentUser.getUid()).addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
@@ -248,7 +252,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
 
         //set snapshot listener for like
         firebaseFirestore.collection(context.getString(R.string.post_collection))
-                .document(post.getPosterId())
+                .document(post.getPostId())
                 .collection(context.getString(R.string.like_collection)).addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
                     @Override
@@ -270,7 +274,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
 
         //set snapshot listener for comment
         firebaseFirestore.collection(context.getString(R.string.post_collection))
-                .document(post.getPosterId())
+                .document(post.getPostId())
                 .collection(context.getString(R.string.comment_collection)).addSnapshotListener(
                 new EventListener<QuerySnapshot>() {
                     @Override

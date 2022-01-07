@@ -186,7 +186,7 @@ public class CommentActivity extends AppCompatActivity {
                         //set snapshot listener for like
                         Utility.firebaseFirestore
                                 .collection(getBaseContext().getString(R.string.post_collection))
-                                .document(targetPost.getPosterId())
+                                .document(targetPost.getPostId())
                                 .collection(getBaseContext().getString(R.string.like_collection))
                                 .addSnapshotListener(
                                         new EventListener<QuerySnapshot>() {
@@ -212,7 +212,7 @@ public class CommentActivity extends AppCompatActivity {
                         //set snapshot listener for comment
                         Utility.firebaseFirestore
                                 .collection(getBaseContext().getString(R.string.post_collection))
-                                .document(targetPost.getPosterId())
+                                .document(targetPost.getPostId())
                                 .collection(getBaseContext().getString(R.string.comment_collection))
                                 .addSnapshotListener(
                                         new EventListener<QuerySnapshot>() {

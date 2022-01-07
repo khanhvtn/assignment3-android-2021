@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     private NotificationManagerCompat notificationManager;
     private ListenerRegistration
             listenerRegistrationNotification;
+    private AppCompatImageButton main_btnCreatePost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
 
         //declare fields
         main_bottomNavigationBar = findViewById(R.id.main_bottomNavigationBar);
+        main_btnCreatePost = findViewById(R.id.main_btnCreatePost);
+
+
+
 
 
         //add map fragment to activity
@@ -115,6 +121,14 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
                         return true;
                     }
                 });
+
+        main_btnCreatePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CreatePostActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

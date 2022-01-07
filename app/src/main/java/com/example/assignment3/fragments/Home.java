@@ -98,4 +98,17 @@ public class Home extends Fragment {
         });
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
+        listener.switchFragmentInMainActivity(new Home());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "OnDestroy");
+    }
 }

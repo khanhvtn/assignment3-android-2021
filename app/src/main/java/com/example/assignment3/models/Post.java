@@ -4,21 +4,21 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 public class Post {
-    private String userId, posterId, textContent,
+    private String userId, postId, textContent,
             imageContentFileName;
     private Date timestamp;
 
     public Post() {
     }
 
-    public Post(String userId, String posterId,
-                String textContent, String imageContentFileName, Date timestamp) {
+    public Post(String userId,
+                @Nullable String textContent, @Nullable String imageContentFileName) {
         this.userId = userId;
-        this.posterId = posterId;
         this.textContent = textContent;
         this.imageContentFileName = imageContentFileName;
-        this.timestamp = timestamp;
     }
 
     public String getUserId() {
@@ -29,12 +29,12 @@ public class Post {
         this.userId = userId;
     }
 
-    public String getPosterId() {
-        return posterId;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPosterId(String posterId) {
-        this.posterId = posterId;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
 

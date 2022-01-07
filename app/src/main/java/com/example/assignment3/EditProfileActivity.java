@@ -73,24 +73,6 @@ public class EditProfileActivity extends AppCompatActivity
                             newImageName =
                                     newImageName.isEmpty() ? UUID.randomUUID().toString() + ".jpg" :
                                             newImageName;
-//                            UploadTask uploadTask =
-//                                    Utility.firebaseStorage.getReference().child("images/" + newImageName)
-//                                            .putFile(imageUri);
-//                            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Utility.ToastMessage(
-//                                            "Something went wrong with uploading image. Please try again!!!", getApplicationContext());
-//                                }
-//                            });
-//                            uploadTask.addOnSuccessListener(
-//                                    new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                        @Override
-//                                        public void onSuccess(
-//                                                UploadTask.TaskSnapshot taskSnapshot) {
-//                                            sendMessage(null, null, nameImage);
-//                                        }
-//                                    });
                             Glide.with(getApplicationContext()).load(imageUri).into(userAvatar);
                             imageChange = true;
                         }
