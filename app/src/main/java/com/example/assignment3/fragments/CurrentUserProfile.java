@@ -17,10 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment3.Authentication;
 import com.example.assignment3.ChatActivity;
+import com.example.assignment3.EditProfileActivity;
 import com.example.assignment3.R;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Post;
@@ -47,6 +49,7 @@ public class CurrentUserProfile extends Fragment {
     private RecyclerView rv_userPost;
     private LinearLayoutManager mLinearLayoutManager;
     private PostAdapter postAdapter;
+    private ScrollView mainScrollView;
 
     public CurrentUserProfile() {
         // Required empty public constructor
@@ -61,6 +64,7 @@ public class CurrentUserProfile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "OnCreateView");
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_current_user_profile, container, false);
         //create linear layout manager.
@@ -77,45 +81,9 @@ public class CurrentUserProfile extends Fragment {
         userBio = v.findViewById(R.id.userBio);
         txtCountFollowers = v.findViewById(R.id.txtCountFollowers);
         txtCountFollowing = v.findViewById(R.id.txtCountFollowing);
+        mainScrollView = v.findViewById(R.id.mainScrollView);
         rv_userPost = v.findViewById(R.id.rv_userPost);
         rv_userPost.setLayoutManager(mLinearLayoutManager);
-        //set user info
-        Utility.firebaseFirestore.collection(getString(R.string.user_collection))
-                .document(Utility.firebaseAuth.getCurrentUser().getUid()).get().addOnSuccessListener(
-                new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User targetUser = documentSnapshot.toObject(User.class);
-                        //update user Avatar
-                        if (targetUser.getImageFileName() != null) {
-                            Utility.firebaseStorage.getReference()
-                                    .child("images/" + targetUser.getImageFileName())
-                                    .getDownloadUrl().addOnSuccessListener(
-                                    new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Glide.with(getContext().getApplicationContext()).load(uri).into(userAvatar);
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.i(TAG, e.getMessage());
-                                    Utility.ToastMessage(e.getMessage(), getContext());
-                                }
-                            });
-                        }
-                        //set user name
-                        userName.setText(targetUser.getFullName());
-                        userAddress.setText(targetUser.getAddress());
-                        userBio.setVisibility(View.GONE);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i(TAG, e.getMessage());
-                Utility.ToastMessage(e.getMessage(), getContext());
-            }
-        });
 
         //set count follower and following
         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
@@ -168,6 +136,7 @@ public class CurrentUserProfile extends Fragment {
 
         //set adapter for Recycler view
         rv_userPost.setAdapter(postAdapter);
+        mainScrollView.scrollTo(0,0);
 
         //set lister for button
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -188,9 +157,69 @@ public class CurrentUserProfile extends Fragment {
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ToastMessage("Go to Edit Profile Activity", getContext());
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
             }
         });
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
+        UpdateUserInfo();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "OnDestroy");
+    }
+
+    private void UpdateUserInfo(){
+        //set user info
+        Utility.firebaseFirestore.collection(getString(R.string.user_collection))
+                .document(Utility.firebaseAuth.getCurrentUser().getUid()).get()
+                .addOnSuccessListener(
+                        new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                User targetUser = documentSnapshot.toObject(User.class);
+                                //update user Avatar
+                                if (targetUser.getImageFileName() != null) {
+                                    Utility.firebaseStorage.getReference()
+                                            .child("images/" + targetUser.getImageFileName())
+                                            .getDownloadUrl().addOnSuccessListener(
+                                            new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    Glide.with(getContext())
+                                                            .load(uri).into(userAvatar);
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.i(TAG, e.getMessage());
+                                            Utility.ToastMessage(e.getMessage(), getContext());
+                                        }
+                                    });
+                                }
+                                //set user name
+                                userName.setText(targetUser.getFullName());
+                                userAddress.setText(targetUser.getAddress());
+                                if (!targetUser.getBio().isEmpty()) {
+                                    userBio.setVisibility(View.VISIBLE);
+                                    userBio.setText(targetUser.getBio());
+                                }
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(TAG, e.getMessage());
+                Utility.ToastMessage(e.getMessage(), getContext());
+            }
+        });
     }
 }

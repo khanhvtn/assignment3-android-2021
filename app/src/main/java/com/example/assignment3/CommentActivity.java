@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -56,6 +57,7 @@ public class CommentActivity extends AppCompatActivity {
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView cm_rvComment;
     private CommentAdapter commentAdapter;
+    private ScrollView mainScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class CommentActivity extends AppCompatActivity {
         cm_imageContentCardView = findViewById(R.id.cm_imageContentCardView);
         cm_imageContent = findViewById(R.id.cm_imageContent);
         cm_edtComment = findViewById(R.id.cm_edtComment);
+        mainScrollView = findViewById(R.id.mainScrollView);
         cm_rvComment = findViewById(R.id.cm_rvComment);
         cm_rvComment.setLayoutManager(mLinearLayoutManager);
 
@@ -379,11 +382,13 @@ public class CommentActivity extends AppCompatActivity {
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 cm_rvComment.scrollToPosition(0);
+                mainScrollView.scrollTo(0,0);
             }
         });
 
         //set adapter for recycler view
         cm_rvComment.setAdapter(commentAdapter);
+        mainScrollView.scrollTo(0,0);
 
         //snapshot listener
         //check current user liked post or not

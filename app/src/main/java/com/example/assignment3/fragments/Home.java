@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.example.assignment3.ChatActivity;
 import com.example.assignment3.IMainManagement;
@@ -30,6 +31,7 @@ public class Home extends Fragment {
     private PostAdapter postAdapter;
     private AppCompatImageButton home_btnMessages;
     private IMainManagement listener;
+    private ScrollView mainScrollView;
 
     public Home() {
         // Required empty public constructor
@@ -58,6 +60,7 @@ public class Home extends Fragment {
         home_rvPost = view.findViewById(R.id.home_rvPosts);
         home_rvPost.setLayoutManager(mLinearLayoutManager);
         home_btnMessages = view.findViewById(R.id.home_btnMessages);
+        mainScrollView = view.findViewById(R.id.mainScrollView);
 
         //create query
         Query query = Utility.firebaseFirestore.collection(getString(R.string.post_collection))
@@ -77,10 +80,12 @@ public class Home extends Fragment {
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 home_rvPost.scrollToPosition(0);
+                mainScrollView.scrollTo(0,0);
             }
         });
         //set adapter and layout manager for RecyclerView
         home_rvPost.setAdapter(postAdapter);
+        mainScrollView.scrollTo(0,0);
 
 
         //set listener

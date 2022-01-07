@@ -91,6 +91,7 @@ public class Chat extends Fragment {
     private IChatManagement listener;
     private User currentUserInfo;
     private CircleImageView imageReceiver;
+    private Boolean startFromProfile = false;
 
     public Chat() {
         // Required empty public constructor
@@ -177,8 +178,11 @@ public class Chat extends Fragment {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey,
                                                  @NonNull Bundle bundle) {
-                        // We use a String here, but any type that can be put in a Bundle is supported
                         String[] authorInfo = bundle.getStringArray("author_info");
+                        Boolean isStartFromProfile = bundle.getBoolean("startFromProfile");
+                        if (isStartFromProfile != null) {
+                            startFromProfile = isStartFromProfile;
+                        }
 
                         authorID = authorInfo[0];
                         authorName = authorInfo[1];
@@ -390,13 +394,17 @@ public class Chat extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void onClickListener() {
-
         //set listener for views
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragmentInMainActivity(
-                        new com.example.assignment3.fragments.ChatRoom());
+                if (startFromProfile) {
+                    getActivity().finish();
+                } else {
+                    listener.switchFragmentInMainActivity(
+                            new com.example.assignment3.fragments.ChatRoom());
+                }
+
             }
         });
 
@@ -520,7 +528,6 @@ public class Chat extends Fragment {
 
     private void openRoomChat(Uri uri) {
 
-
         /**
          * Query 50 most recent chat messages
          * */
@@ -529,7 +536,7 @@ public class Chat extends Fragment {
                 .document(currentRoomChatID)
                 .collection("messages")
                 .orderBy("timestamp")
-                .limitToLast(50);
+                .limitToLast(100);
 
         /**
          * Add SnapshotListener to get message in realtime

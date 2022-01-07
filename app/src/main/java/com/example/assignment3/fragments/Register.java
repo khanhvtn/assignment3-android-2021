@@ -96,9 +96,10 @@ public class Register extends Fragment {
                             new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    User newUser = new User(fullName, email, address);
+
                                     if (task.isSuccessful()) {
                                         String userId = task.getResult().getUser().getUid();
+                                        User newUser = new User(userId, fullName, email, address);
                                         db.collection("users")
                                                 .document(userId)
                                                 .set(newUser).addOnCompleteListener(
@@ -107,7 +108,8 @@ public class Register extends Fragment {
                                                     public void onComplete(
                                                             @NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            ToastMessage("Register Successful. Please Login!!!");
+                                                            ToastMessage(
+                                                                    "Register Successful. Please Login!!!");
                                                             Intent intent = new Intent(getContext(),
                                                                     MainActivity.class);
                                                             startActivity(intent);
@@ -150,9 +152,10 @@ public class Register extends Fragment {
 
         return null;
     }
-    private void ToastMessage(String message){
+
+    private void ToastMessage(String message) {
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0,0);
+        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 }

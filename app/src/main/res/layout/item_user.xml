@@ -20,7 +20,7 @@
             app:civ_border_width="0.1dp"
             android:src="@drawable/ic_person" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -28,7 +28,7 @@
             android:layout_toEndOf="@+id/imageUserAdapter"
             android:orientation="vertical">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/usernameUserAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,6 +36,6 @@
                 android:maxLines="1"
                 android:text="username"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

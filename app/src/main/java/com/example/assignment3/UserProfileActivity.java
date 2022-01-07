@@ -9,14 +9,18 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Follower;
+import com.example.assignment3.models.NotificationApp;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
 import com.example.assignment3.utilities.Utility;
@@ -40,6 +44,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private RecyclerView rv_userPost;
     private LinearLayoutManager mLinearLayoutManager;
     private PostAdapter postAdapter;
+    private User userProfile, currentUserProfile;
+    private ScrollView mainScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +70,26 @@ public class UserProfileActivity extends AppCompatActivity {
         userBio = findViewById(R.id.userBio);
         txtCountFollowers = findViewById(R.id.txtCountFollowers);
         txtCountFollowing = findViewById(R.id.txtCountFollowing);
+        mainScrollView = findViewById(R.id.mainScrollView);
         rv_userPost = findViewById(R.id.rv_userPost);
         rv_userPost.setLayoutManager(mLinearLayoutManager);
+        //get current user info
+        Utility.firebaseFirestore.collection(getString(R.string.user_collection))
+                .document(Utility.firebaseAuth.getCurrentUser().getUid()).get()
+                .addOnSuccessListener(
+                        new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                User targetUser = documentSnapshot.toObject(User.class);
+                                currentUserProfile = targetUser;
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(TAG, e.getMessage());
+                Utility.ToastMessage(e.getMessage(), getBaseContext());
+            }
+        });
         //set user info
         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                 .document(userId).get().addOnSuccessListener(
@@ -73,6 +97,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         User targetUser = documentSnapshot.toObject(User.class);
+                        userProfile = targetUser;
                         //update user Avatar
                         if (targetUser.getImageFileName() != null) {
                             Utility.firebaseStorage.getReference()
@@ -81,7 +106,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                     new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
-                                            Glide.with(getApplicationContext()).load(uri).into(userAvatar);
+                                            Glide.with(getApplicationContext()).load(uri)
+                                                    .into(userAvatar);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -94,7 +120,10 @@ public class UserProfileActivity extends AppCompatActivity {
                         //set user name
                         userName.setText(targetUser.getFullName());
                         userAddress.setText(targetUser.getAddress());
-                        userBio.setVisibility(View.GONE);
+                        if (!targetUser.getBio().isEmpty()) {
+                            userBio.setVisibility(View.VISIBLE);
+                            userBio.setText(targetUser.getBio());
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -155,6 +184,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //set adapter for Recycler view
         rv_userPost.setAdapter(postAdapter);
+        mainScrollView.scrollTo(0, 0);
 
         //set lister for button
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +196,10 @@ public class UserProfileActivity extends AppCompatActivity {
         btnMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utility.ToastMessage("Direct Message", getBaseContext());
+                Intent intent = new Intent(UserProfileActivity.this, ChatActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+
             }
         });
         btnFollow.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +240,15 @@ public class UserProfileActivity extends AppCompatActivity {
                                             .document(Utility.firebaseAuth.getUid())
                                             .collection(getString(R.string.following_collection))
                                             .document(userId).set(new Follower(userId));
+                                    //add new notification
+                                    Utility.firebaseFirestore
+                                            .collection(getString(R.string.user_collection))
+                                            .document(userId)
+                                            .collection(getString(R.string.notification_collection))
+                                            .add(new NotificationApp(
+                                                    String.format("%s starts to follow you",
+                                                            currentUserProfile.getFullName()),
+                                                    getString(R.string.notification_post_type)));
                                 }
 
                             }
