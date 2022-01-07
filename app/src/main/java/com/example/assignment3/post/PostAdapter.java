@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.assignment3.R;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
+import com.example.assignment3.utilities.GlideApp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -30,8 +33,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
     public Context mContext;
     public List<Post> mPost;
     private FirebaseAuth auth;
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser firebaseUser;
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
     public PostAdapter(Context mContext, List<Post> mPost) {
         this.mContext = mContext;
@@ -43,22 +47,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.homepage_display_post, viewGroup,false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Post post = mPost.get(position);
-        Glide.with(mContext).load(post.getImgUrl()).into(viewHolder.post_image);
-        if (post.getContent().isEmpty()){
+//        GlideApp.with(mContext).load(post.getImgUrl()).into(viewHolder.post_image);
+//        viewHolder.username.setText(post.getUidUser());
+
+        if (post.getContent() == null){
             viewHolder.description.setVisibility(View.GONE);
         } else {
             viewHolder.description.setVisibility(View.VISIBLE);
             viewHolder.description.setText(post.getContent());
         }
-        viewHolder.publisherInfo(viewHolder.userImage_profile, viewHolder.username, viewHolder.publisher, post.getUidUser(), post);
+        viewHolder.publisherInfo(viewHolder.userImage_profile, viewHolder.username, viewHolder.publisher, post);
 
     }
 
@@ -73,7 +77,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-//      Missing user profile image
             userImage_profile = itemView.findViewById(R.id.large_profile);
             post_image = itemView.findViewById(R.id.post_image);
             like = itemView.findViewById(R.id.like);
@@ -86,18 +89,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
             comments = itemView.findViewById(R.id.comments);
         }
 
-        private void publisherInfo(final ImageView userImage_profile, final TextView username, final TextView publisher, final String userID, Post post){
-            db = FirebaseFirestore.getInstance();
+        private void publisherInfo(final ImageView userImage_profile, final TextView username, final TextView publisher, Post post){
             DocumentReference reference = db.collection("users").document(post.getUidUser());
             reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User user = documentSnapshot.toObject(User.class);
-                    Glide.with(mContext).load(user.getImageFileName()).into(userImage_profile);
-                    username.setText(post.getUidUser());
-                    publisher.setText(post.getUidUser());
+                    if (user.getImageFileName()!= null) {
+                        StorageReference storageReference = storage.getReference().child("images/" + user.getImageFileName());
+                        GlideApp.with(mContext).load(storageReference).into(userImage_profile);
+                    }
+
+                    username.setText(user.getFullName());
+                    publisher.setText(user.getFullName());
                 }
             });
+            StorageReference postImgReference = storage.getReference().child(post.getImgUrl());
+            GlideApp.with(mContext).load(postImgReference).into(post_image);
 
         }
     }
