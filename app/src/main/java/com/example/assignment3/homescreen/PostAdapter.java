@@ -12,12 +12,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment3.CommentActivity;
 import com.example.assignment3.IMainManagement;
 import com.example.assignment3.R;
 import com.example.assignment3.UserProfileActivity;
+import com.example.assignment3.fragments.CaptureImageDialogFragment;
+import com.example.assignment3.fragments.PostOptionsDialogFragment;
 import com.example.assignment3.models.Like;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
@@ -37,12 +40,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> {
+    private static final String POST_OPTIONS_DIALOG_TAG = "POST_OPTIONS_DIALOG_TAG";
     private static final String TAG = "PostAdapter";
     private Context context;
     private FirebaseUser currentUser;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private IMainManagement listener = null;
+    private IMainManagement listener;
+    private Boolean isCurrentUserProfile;
+    private FragmentManager fragmentManager;
 
 
     public PostAdapter(FirestoreRecyclerOptions<Post> options, Context context) {
@@ -53,11 +59,14 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
     }
 
     public PostAdapter(FirestoreRecyclerOptions<Post> options, Context context,
-                       IMainManagement listener) {
+                       IMainManagement listener, Boolean isCurrentUserProfile,
+                       @Nullable FragmentManager fragmentManager) {
         super(options);
         this.context = context;
         this.currentUser = FirebaseAuth.getInstance().getCurrentUser();
         this.listener = listener;
+        this.isCurrentUserProfile = isCurrentUserProfile;
+        this.fragmentManager = fragmentManager;
 
     }
 
@@ -99,7 +108,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                             @Override
                             public void onClick(View view) {
                                 //not profile
-                                if (listener != null) {
+                                if (!isCurrentUserProfile) {
                                     if (Utility.firebaseAuth.getCurrentUser().getUid()
                                             .equals(post.getUserId())) {
                                         listener.switchToProfile();
@@ -219,6 +228,19 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
                 context.startActivity(intent);
             }
         });
+        if (isCurrentUserProfile) {
+            viewHolder.btnMoreOptions.setVisibility(View.VISIBLE);
+            viewHolder.btnMoreOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.setPostIdTarget(post.getPostId());
+                    PostOptionsDialogFragment postOptionsDialogFragment =
+                            new PostOptionsDialogFragment();
+                    postOptionsDialogFragment
+                            .show(fragmentManager, POST_OPTIONS_DIALOG_TAG);
+                }
+            });
+        }
 
         //check current user liked post or not
         firebaseFirestore.collection(context.getString(R.string.post_collection))

@@ -52,6 +52,7 @@
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.1743886743886744" />
         <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_edit_post.xml" value="0.16302083333333334" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.2833333333333333" />
         <entry key="app/src/main/res/layout/activity_list_follower.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />

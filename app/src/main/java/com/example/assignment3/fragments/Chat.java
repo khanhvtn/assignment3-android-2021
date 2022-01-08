@@ -78,7 +78,6 @@ public class Chat extends Fragment {
     private FirestoreRecyclerAdapter<Message, MessageViewHolder>
             chatAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-    private MaterialToolbar toolbar;
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser currentUser;

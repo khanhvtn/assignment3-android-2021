@@ -8,4 +8,5 @@ public interface IMainManagement {
     public void switchToProfile();
 
     public void removeNotificationListener();
+    public void setPostIdTarget(String postId);
 }

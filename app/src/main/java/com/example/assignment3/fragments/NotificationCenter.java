@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.assignment3.IMainManagement;
 import com.example.assignment3.R;
 import com.example.assignment3.models.Message;
 import com.example.assignment3.models.NotificationApp;
@@ -22,6 +23,7 @@ public class NotificationCenter extends Fragment {
     private RecyclerView rv_notifications;
     private LinearLayoutManager mLinearLayoutManager;
     private NotificationCenterAdapter notificationCenterAdapter;
+    private IMainManagement mainManagement;
 
     public NotificationCenter() {
         // Required empty public constructor
@@ -31,6 +33,7 @@ public class NotificationCenter extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mainManagement = (IMainManagement) getActivity();
     }
 
     @Override
@@ -62,5 +65,11 @@ public class NotificationCenter extends Fragment {
         });
         rv_notifications.setAdapter(notificationCenterAdapter);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainManagement.switchFragmentInMainActivity(new NotificationCenter());
     }
 }

@@ -2,6 +2,7 @@ package com.example.assignment3;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -22,9 +23,11 @@ import com.example.assignment3.fragments.CurrentUserProfile;
 import com.example.assignment3.fragments.Explore;
 import com.example.assignment3.fragments.Home;
 import com.example.assignment3.fragments.NotificationCenter;
+import com.example.assignment3.fragments.PostOptionsDialogFragment;
 import com.example.assignment3.models.NotificationApp;
 import com.example.assignment3.utilities.Utility;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,10 +36,12 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements IMainManagement {
+public class MainActivity extends AppCompatActivity implements IMainManagement,
+        PostOptionsDialogFragment.NoticeDialogListener {
     private Integer idNotification = 1;
     private final String CHANNEL_ID = UUID.randomUUID().toString();
     private final String TAG = "MainActivity";
@@ -47,11 +52,18 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     private ListenerRegistration
             listenerRegistrationNotification;
     private AppCompatImageButton main_btnCreatePost;
+    private String targetPostId = "";
+    private AlertDialog loadingProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //generate progress dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.loading_progress).setCancelable(false);
+        loadingProgress = builder.create();
 
         //create notification
         notificationManager = NotificationManagerCompat.from(this);
@@ -273,6 +285,11 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
         listenerRegistrationNotification.remove();
     }
 
+    @Override
+    public void setPostIdTarget(String postId) {
+        this.targetPostId = postId;
+    }
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -286,6 +303,42 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @Override
+    public void onPickingOption(int optionIndex) {
+        switch (optionIndex) {
+            case 0:
+                Intent intent = new Intent(MainActivity.this, EditPostActivity.class);
+                intent.putExtra("postId", targetPostId);
+                startActivity(intent);
+                break;
+            case 1:
+                loadingProgress.show();
+                Utility.firebaseFirestore
+                        .collection(getString(R.string.post_collection))
+                        .document(targetPostId).delete().addOnSuccessListener(
+                        new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                loadingProgress.dismiss();
+                                Utility.ToastMessage(
+                                        "Delete Post Successfully",
+                                        getApplicationContext());
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(TAG, e.getMessage());
+                        loadingProgress.dismiss();
+                        Utility.ToastMessage(
+                                "Something went wrong. Please try again",
+                                getApplicationContext());
+                    }
+                });
+                break;
         }
     }
 }

@@ -11,6 +11,16 @@
         android:layout_height="50dp"
         android:paddingHorizontal="15dp">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:id="@+id/btnMoreOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:rotation="90"
+            android:src="@drawable/ic_more_vert" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imagePoster"
             android:layout_width="45dp"
@@ -53,10 +63,10 @@
         android:paddingHorizontal="15dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_marginBottom="10dp"
             android:id="@+id/textContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:visibility="gone" />
@@ -73,7 +83,7 @@
                 android:id="@+id/imageContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

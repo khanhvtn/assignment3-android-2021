@@ -42,7 +42,7 @@ public class Post {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
+    public void setTextContent(@Nullable String textContent) {
         this.textContent = textContent;
     }
 
@@ -50,7 +50,7 @@ public class Post {
         return imageContentFileName;
     }
 
-    public void setImageContentFileName(String imageContentFileName) {
+    public void setImageContentFileName(@Nullable String imageContentFileName) {
         this.imageContentFileName = imageContentFileName;
     }
 

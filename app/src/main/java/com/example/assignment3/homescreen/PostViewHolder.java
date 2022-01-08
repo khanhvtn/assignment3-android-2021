@@ -17,7 +17,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     CircleImageView imagePoster;
     AppCompatTextView namePoster,postTimestamp, textContent, txtLikeCount, txtCommentCount;
     AppCompatImageView imageContent;
-    AppCompatImageButton btnLike,btnComment;
+    AppCompatImageButton btnLike,btnComment, btnMoreOptions;
     CardView imageContentCardView;
     public PostViewHolder(View v) {
         super(v);
@@ -30,6 +30,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         this.imageContent = v.findViewById(R.id.imageContent);
         this.btnLike = v.findViewById(R.id.btnLike);
         this.btnComment = v.findViewById(R.id.btnComment);
+        this.btnMoreOptions = v.findViewById(R.id.btnMoreOptions);
         this.imageContentCardView = v.findViewById(R.id.imageContentCardView);
     }
 }

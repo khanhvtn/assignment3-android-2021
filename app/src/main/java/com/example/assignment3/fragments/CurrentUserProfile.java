@@ -95,6 +95,9 @@ public class CurrentUserProfile extends Fragment {
         rv_userPost = v.findViewById(R.id.rv_userPost);
         rv_userPost.setLayoutManager(mLinearLayoutManager);
 
+        //set info user
+        UpdateUserInfo();
+
         //set count follower and following
         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                 .document(Utility.firebaseAuth.getCurrentUser().getUid())
@@ -142,7 +145,7 @@ public class CurrentUserProfile extends Fragment {
                 new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class)
                         .setLifecycleOwner(this).build();
         //create post adapter
-        postAdapter = new PostAdapter(options, getContext());
+        postAdapter = new PostAdapter(options, getContext(), mainManagement, true, getChildFragmentManager());
 
         //set adapter for Recycler view
         rv_userPost.setAdapter(postAdapter);
@@ -198,7 +201,7 @@ public class CurrentUserProfile extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "OnResume");
-        UpdateUserInfo();
+        mainManagement.switchFragmentInMainActivity(new CurrentUserProfile());
     }
 
     @Override

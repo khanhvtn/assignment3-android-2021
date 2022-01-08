@@ -99,7 +99,7 @@ public class Home extends Fragment {
                                         .setQuery(query, Post.class)
                                         .setLifecycleOwner(getViewLifecycleOwner())
                                         .build();
-                        postAdapter = new PostAdapter(options, getContext(), listener);
+                        postAdapter = new PostAdapter(options, getContext(), listener, false, null);
                         //scroll to newest post
                         postAdapter.registerAdapterDataObserver(
                                 new RecyclerView.AdapterDataObserver() {

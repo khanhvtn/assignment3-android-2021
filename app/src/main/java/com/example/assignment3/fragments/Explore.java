@@ -23,6 +23,7 @@ public class Explore extends Fragment
     private AppCompatButton btnCancel;
     private SearchUserAdapter searchUserAdapter;
     private RecyclerView rv_user;
+    private IMainManagement mainManagement;
 
     public Explore() {
         // Required empty public constructor
@@ -31,6 +32,7 @@ public class Explore extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainManagement = (IMainManagement) getActivity();
         //start first fragment
         ExplorePost explorePostFragment = new ExplorePost();
         getChildFragmentManager()
@@ -124,5 +126,11 @@ public class Explore extends Fragment
             rv_user.setVisibility(View.GONE);
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainManagement.switchFragmentInMainActivity(new Explore());
     }
 }

@@ -56,7 +56,7 @@ public class ExplorePost extends Fragment {
                 .setQuery(query, Post.class)
                 .setLifecycleOwner(this)
                 .build();
-        postAdapter = new PostAdapter(options, getContext(), mainManagement);
+        postAdapter = new PostAdapter(options, getContext(), mainManagement, false, null);
         //set adapter and layout manager for RecyclerView
         rv_userPost.setAdapter(postAdapter);
         return v;
