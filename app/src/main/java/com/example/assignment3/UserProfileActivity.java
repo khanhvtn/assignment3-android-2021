@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +47,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private User userProfile, currentUserProfile;
     private ScrollView mainScrollView;
+    private LinearLayoutCompat layoutFollower,layoutFollowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         //declare fields
+        layoutFollower = findViewById(R.id.layoutFollower);
+        layoutFollowing = findViewById(R.id.layoutFollowing);
         btnBack = findViewById(R.id.btnBack);
         btnMessages = findViewById(R.id.btnMessages);
         btnFollow = findViewById(R.id.btnFollow);
@@ -180,7 +184,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 new FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post.class)
                         .setLifecycleOwner(this).build();
         //create post adapter
-        postAdapter = new PostAdapter(options, getBaseContext());
+        postAdapter = new PostAdapter(options, UserProfileActivity.this);
 
         //set adapter for Recycler view
         rv_userPost.setAdapter(postAdapter);
@@ -258,6 +262,23 @@ public class UserProfileActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        layoutFollower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserProfileActivity.this, ListFollowerActivity.class);
+                intent.putExtra("arrayInfo", new String[]{userId, "follower"});
+                startActivity(intent);
+            }
+        });
+        layoutFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserProfileActivity.this, ListFollowerActivity.class);
+                intent.putExtra("arrayInfo", new String[]{userId, "following"});
+                startActivity(intent);
             }
         });
 

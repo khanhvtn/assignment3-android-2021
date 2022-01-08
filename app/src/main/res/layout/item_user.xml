@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
     <RelativeLayout
+        android:id="@+id/layoutWrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"

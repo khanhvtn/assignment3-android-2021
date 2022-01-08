@@ -471,39 +471,53 @@ public class Chat extends Fragment {
             }
         });
         edtChat.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 firebaseFirestore.collection("chats")
-                        .document(currentRoomChatID)
-                        .update(currentUser.getUid(), true)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .document(currentRoomChatID).get().addOnSuccessListener(
+                        new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Set current user seen!");
-                                }
-                            }
-                        });
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.getData() != null) {
+                                    firebaseFirestore.collection("chats")
+                                            .document(currentRoomChatID)
+                                            .update(currentUser.getUid(), true)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "Set current user seen!");
+                                                    }
+                                                }
+                                            });
 
-                firebaseFirestore.collection("chats")
-                        .document(currentRoomChatID)
-                        .collection("messages")
-                        .whereEqualTo("seenStatus", false)
-                        .whereEqualTo("uidSender", authorID)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Map<String, Object> seenStatus = new HashMap<>();
-                                    seenStatus.put("seenStatus", true);
-                                    if (task.getResult() != null) {
-                                        for (QueryDocumentSnapshot message : task.getResult()) {
-                                            message.getReference()
-                                                    .set(seenStatus, SetOptions.merge());
-                                        }
-                                    }
+                                    firebaseFirestore.collection("chats")
+                                            .document(currentRoomChatID)
+                                            .collection("messages")
+                                            .whereEqualTo("seenStatus", false)
+                                            .whereEqualTo("uidSender", authorID)
+                                            .get()
+                                            .addOnCompleteListener(
+                                                    new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(
+                                                                @NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Map<String, Object> seenStatus =
+                                                                        new HashMap<>();
+                                                                seenStatus.put("seenStatus", true);
+                                                                if (task.getResult() != null) {
+                                                                    for (QueryDocumentSnapshot message : task
+                                                                            .getResult()) {
+                                                                        message.getReference()
+                                                                                .set(seenStatus,
+                                                                                        SetOptions
+                                                                                                .merge());
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    });
                                 }
                             }
                         });

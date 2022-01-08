@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,9 @@ import com.example.assignment3.Authentication;
 import com.example.assignment3.ChatActivity;
 import com.example.assignment3.EditProfileActivity;
 import com.example.assignment3.IMainManagement;
+import com.example.assignment3.ListFollowerActivity;
 import com.example.assignment3.R;
+import com.example.assignment3.UserProfileActivity;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
@@ -52,6 +55,7 @@ public class CurrentUserProfile extends Fragment {
     private PostAdapter postAdapter;
     private ScrollView mainScrollView;
     private IMainManagement mainManagement;
+    private LinearLayoutCompat layoutFollowing, layoutFollower;
 
     public CurrentUserProfile() {
         // Required empty public constructor
@@ -76,6 +80,8 @@ public class CurrentUserProfile extends Fragment {
 
 
         //declare fields
+        layoutFollower = v.findViewById(R.id.layoutFollower);
+        layoutFollowing = v.findViewById(R.id.layoutFollowing);
         btnLogout = v.findViewById(R.id.btnLogout);
         btnMessages = v.findViewById(R.id.btnMessages);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
@@ -140,7 +146,7 @@ public class CurrentUserProfile extends Fragment {
 
         //set adapter for Recycler view
         rv_userPost.setAdapter(postAdapter);
-        mainScrollView.scrollTo(0,0);
+        mainScrollView.scrollTo(0, 0);
 
         //set lister for button
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +172,25 @@ public class CurrentUserProfile extends Fragment {
                 startActivity(intent);
             }
         });
+
+        layoutFollower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ListFollowerActivity.class);
+                intent.putExtra("arrayInfo",
+                        new String[]{Utility.firebaseAuth.getCurrentUser().getUid(), "follower"});
+                startActivity(intent);
+            }
+        });
+        layoutFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ListFollowerActivity.class);
+                intent.putExtra("arrayInfo",
+                        new String[]{Utility.firebaseAuth.getCurrentUser().getUid(), "following"});
+                startActivity(intent);
+            }
+        });
         return v;
     }
 
@@ -182,7 +207,7 @@ public class CurrentUserProfile extends Fragment {
         Log.i(TAG, "OnDestroy");
     }
 
-    private void UpdateUserInfo(){
+    private void UpdateUserInfo() {
         //set user info
         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                 .document(Utility.firebaseAuth.getCurrentUser().getUid()).get()

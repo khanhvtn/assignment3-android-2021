@@ -3,6 +3,7 @@ package com.example.assignment3.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,11 +19,18 @@ import com.example.assignment3.ChatActivity;
 import com.example.assignment3.IMainManagement;
 import com.example.assignment3.R;
 import com.example.assignment3.homescreen.PostAdapter;
+import com.example.assignment3.models.Follower;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.utilities.Utility;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Home extends Fragment {
     private final String TAG = "HomeFragment";
@@ -62,40 +70,69 @@ public class Home extends Fragment {
         home_btnMessages = view.findViewById(R.id.home_btnMessages);
         mainScrollView = view.findViewById(R.id.mainScrollView);
 
-        //create query
-        Query query = Utility.firebaseFirestore.collection(getString(R.string.post_collection))
-                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
+        //get list following
+        Utility.firebaseFirestore.collection(getString(R.string.user_collection))
+                .document(Utility.firebaseAuth.getCurrentUser().getUid())
+                .collection(getString(R.string.following_collection)).get().addOnSuccessListener(
+                new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Follower> followerList =
+                                queryDocumentSnapshots.toObjects(Follower.class);
+                        List<String> followerIdList = new LinkedList<>();
+                        for (Follower follower : followerList
+                        ) {
+                            followerIdList.add(follower.getUserId());
+                        }
 
-        // Configure recycler adapter options:
-        //  * query is the Query object defined above.
-        //  * Chat.class instructs the adapter to convert each DocumentSnapshot to a Chat object
-        FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>()
-                .setQuery(query, Post.class)
-                .setLifecycleOwner(this)
-                .build();
-        postAdapter = new PostAdapter(options, getContext(), listener);
-        //scroll to newest post
-        postAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                        //create query
+                        Query query = Utility.firebaseFirestore
+                                .collection(getString(R.string.post_collection))
+                                .whereIn("userId", followerIdList)
+                                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
+
+                        // Configure recycler adapter options:
+                        //  * query is the Query object defined above.
+                        //  * Chat.class instructs the adapter to convert each DocumentSnapshot to a Chat object
+                        FirestoreRecyclerOptions<Post> options =
+                                new FirestoreRecyclerOptions.Builder<Post>()
+                                        .setQuery(query, Post.class)
+                                        .setLifecycleOwner(getViewLifecycleOwner())
+                                        .build();
+                        postAdapter = new PostAdapter(options, getContext(), listener);
+                        //scroll to newest post
+                        postAdapter.registerAdapterDataObserver(
+                                new RecyclerView.AdapterDataObserver() {
+                                    @Override
+                                    public void onItemRangeInserted(int positionStart,
+                                                                    int itemCount) {
+                                        super.onItemRangeInserted(positionStart, itemCount);
+                                        home_rvPost.scrollToPosition(0);
+                                        mainScrollView.scrollTo(0, 0);
+                                    }
+                                });
+                        //set adapter and layout manager for RecyclerView
+                        home_rvPost.setAdapter(postAdapter);
+                        mainScrollView.scrollTo(0, 0);
+
+
+                        //set listener
+                        home_btnMessages.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getContext(), ChatActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                home_rvPost.scrollToPosition(0);
-                mainScrollView.scrollTo(0,0);
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, e.getMessage());
             }
         });
-        //set adapter and layout manager for RecyclerView
-        home_rvPost.setAdapter(postAdapter);
-        mainScrollView.scrollTo(0,0);
 
 
-        //set listener
-        home_btnMessages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                startActivity(intent);
-            }
-        });
         return view;
     }
 

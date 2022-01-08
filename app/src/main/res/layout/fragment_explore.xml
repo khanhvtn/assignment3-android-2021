@@ -14,20 +14,6 @@
         android:paddingHorizontal="15dp"
         android:paddingVertical="20dp">
 
-        <!--        <RelativeLayout-->
-        <!--            android:layout_marginVertical="20dp"-->
-        <!--            android:id="@+id/topBarChatRoom"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content">-->
-        <!--            <androidx.appcompat.widget.AppCompatImageButton-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_alignParentRight="true"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:background="@drawable/rounded_icon_border"-->
-        <!--                android:padding="5dp"-->
-        <!--                android:src="@drawable/ic_settings" />-->
-        <!--        </RelativeLayout>-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
