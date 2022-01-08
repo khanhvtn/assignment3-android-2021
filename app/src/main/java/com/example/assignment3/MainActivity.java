@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +21,7 @@ import android.view.View;
 import com.example.assignment3.fragments.CurrentUserProfile;
 import com.example.assignment3.fragments.Explore;
 import com.example.assignment3.fragments.Home;
+import com.example.assignment3.fragments.NotificationCenter;
 import com.example.assignment3.models.NotificationApp;
 import com.example.assignment3.utilities.Utility;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,9 +107,7 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
                                 switchFragmentInMainActivity(new Explore());
                                 break;
                             case R.id.item_notifications:
-//                                switchFragmentInMainActivity(new GenerateReport());
-                                Utility.ToastMessage("Go To Notification Fragment",
-                                        getBaseContext());
+                                switchFragmentInMainActivity(new NotificationCenter());
                                 break;
                             case R.id.item_profile:
                                 switchFragmentInMainActivity(new CurrentUserProfile());
@@ -188,7 +186,9 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
                                                                 R.string.notificationP_collection))
                                                         .add(new NotificationApp(
                                                                 newNotification.getMessage(),
-                                                                newNotification.getType()));
+                                                                newNotification.getType(),
+                                                                newNotification.getTargetId(),
+                                                                newNotification.getUserId()));
                                                 //delete new notification in general notification.
                                                 dc.getDocument().getReference().delete()
                                                         .addOnFailureListener(
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
-        if(listenerRegistrationNotification !=null){
+        if (listenerRegistrationNotification != null) {
             listenerRegistrationNotification.remove();
         }
 
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "onPause");
-        if(listenerRegistrationNotification !=null){
+        if (listenerRegistrationNotification != null) {
             listenerRegistrationNotification.remove();
         }
     }

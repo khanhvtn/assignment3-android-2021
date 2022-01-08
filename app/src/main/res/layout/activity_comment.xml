@@ -43,13 +43,16 @@
     </com.google.android.material.appbar.AppBarLayout>
     <!--Post-->
     <ScrollView
+        android:layout_marginBottom="65dp"
         android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/cm_appBar">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/cm_postInfo"
                 android:layout_width="match_parent"
@@ -100,12 +103,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:orientation="vertical"
                     android:paddingHorizontal="15dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/cm_textContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/black"
                         android:textSize="20dp"
                         android:visibility="gone" />
 
@@ -114,14 +120,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:visibility="gone"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="0dp">
+                        app:cardCornerRadius="10dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/cm_imageContent"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitXY" />
+                            android:scaleType="centerCrop" />
                     </androidx.cardview.widget.CardView>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -210,18 +215,20 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </RelativeLayout>
     </ScrollView>
+
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15dp">
+
         <RelativeLayout
-            android:background="@drawable/rounded_icon_border"
-            android:backgroundTint="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_icon_border"
+            android:backgroundTint="@color/browser_actions_bg_grey">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/cm_edtComment"

@@ -187,13 +187,19 @@ public class CreatePostActivity extends AppCompatActivity
                                                                                                     Follower.class);
                                                                             for (Follower follower : listFollower
                                                                             ) {
-                                                                                Log.i(TAG, follower.getUserId());
+                                                                                Log.i(TAG,
+                                                                                        follower.getUserId());
                                                                                 String message =
                                                                                         currentUserInfo
                                                                                                 .getFullName() +
                                                                                                 " shared a new post";
                                                                                 Utility.sendNotification(
                                                                                         follower.getUserId(),
+                                                                                        documentReference
+                                                                                                .getId(),
+                                                                                        Utility.firebaseAuth
+                                                                                                .getCurrentUser()
+                                                                                                .getUid(),
                                                                                         message,
                                                                                         "post",
                                                                                         getApplicationContext());
@@ -269,6 +275,10 @@ public class CreatePostActivity extends AppCompatActivity
                                                                                 " shared a new post";
                                                                 Utility.sendNotification(
                                                                         follower.getUserId(),
+                                                                        documentReference.getId(),
+                                                                        Utility.firebaseAuth
+                                                                                .getCurrentUser()
+                                                                                .getUid(),
                                                                         message,
                                                                         "post",
                                                                         getApplicationContext());

@@ -28,18 +28,20 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 public class Utility {
     private static final String TAG = "Utility";
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    static public void sendNotification(String userId, String notificationMessage,
+    static public void sendNotification(String userId, String targetId, String targetUser, String notificationMessage,
                                         String notificationType, Context context) {
         Utility.firebaseFirestore.collection(context.getString(R.string.user_collection))
                 .document(userId).collection(
                 context.getString(R.string.notification_collection))
-                .add(new NotificationApp(notificationMessage, notificationType));
+                .add(new NotificationApp(notificationMessage, notificationType, targetId, targetUser));
     }
 
     static public void ToastMessage(String message, Context context) {

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,7 +52,7 @@ public class CommentActivity extends AppCompatActivity {
     private AppCompatTextView cm_namePoster, cm_postTimestamp, cm_textContent, cm_txtLikeCount,
             cm_txtCommentCount, cm_titleComment;
     private CardView cm_imageContentCardView;
-    private ImageView cm_imageContent;
+    private AppCompatImageView cm_imageContent;
     private AppCompatEditText cm_edtComment;
     private String postId;
     private LinearLayoutManager mLinearLayoutManager;
@@ -133,7 +134,8 @@ public class CommentActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onClick(View view) {
                                                         //not profile
-                                                        if (!Utility.firebaseAuth.getCurrentUser().getUid()
+                                                        if (!Utility.firebaseAuth.getCurrentUser()
+                                                                .getUid()
                                                                 .equals(targetPost.getUserId())) {
                                                             Intent intent =
                                                                     new Intent(
@@ -162,7 +164,8 @@ public class CommentActivity extends AppCompatActivity {
                         if (targetPost.getTextContent() != null) {
                             cm_textContent.setVisibility(View.VISIBLE);
                             cm_textContent.setText(targetPost.getTextContent());
-                        } else {
+                        }
+                        if (targetPost.getImageContentFileName() != null) {
                             cm_imageContentCardView.setVisibility(View.VISIBLE);
                             Utility.firebaseStorage.getReference()
                                     .child("images/" + targetPost.getImageContentFileName())
@@ -180,6 +183,7 @@ public class CommentActivity extends AppCompatActivity {
                                     ToastMessage(e.getMessage());
                                 }
                             });
+
                         }
 
                         //add snapshot listener for like and comment count.
@@ -288,7 +292,8 @@ public class CommentActivity extends AppCompatActivity {
                 Utility.firebaseFirestore.collection(getString(R.string.post_collection))
                         .document(postId)
                         .collection(getString(R.string.like_collection))
-                        .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid()).get()
+                        .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid())
+                        .get()
                         .addOnSuccessListener(
                                 new OnSuccessListener<QuerySnapshot>() {
                                     @Override
@@ -298,7 +303,9 @@ public class CommentActivity extends AppCompatActivity {
                                                     .collection(getString(R.string.post_collection))
                                                     .document(postId)
                                                     .collection(getString(R.string.like_collection))
-                                                    .add(new Like(Utility.firebaseAuth.getCurrentUser().getUid()))
+                                                    .add(new Like(
+                                                            Utility.firebaseAuth.getCurrentUser()
+                                                                    .getUid()))
                                                     .addOnSuccessListener(
                                                             new OnSuccessListener<DocumentReference>() {
                                                                 @Override
@@ -382,43 +389,44 @@ public class CommentActivity extends AppCompatActivity {
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 cm_rvComment.scrollToPosition(0);
-                mainScrollView.scrollTo(0,0);
+                mainScrollView.scrollTo(0, 0);
             }
         });
 
         //set adapter for recycler view
         cm_rvComment.setAdapter(commentAdapter);
-        mainScrollView.scrollTo(0,0);
+        mainScrollView.scrollTo(0, 0);
 
         //snapshot listener
         //check current user liked post or not
         Utility.firebaseFirestore.collection(getString(R.string.post_collection))
                 .document(postId)
                 .collection(getString(R.string.like_collection))
-                .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid()).addSnapshotListener(
-                new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                .whereEqualTo("userId", Utility.firebaseAuth.getCurrentUser().getUid())
+                .addSnapshotListener(
+                        new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value,
+                                                @Nullable FirebaseFirestoreException e) {
+                                if (e != null) {
+                                    Log.w(TAG, "Listen failed.", e);
+                                    return;
+                                }
 
-                        if (value != null) {
-                            Log.d(TAG, "Current data: " + value.size());
-                            if (value.isEmpty()) {
-                                cm_btnLike.setImageDrawable(
-                                        getDrawable(R.drawable.ic_thumb_up));
-                            } else {
-                                cm_btnLike.setImageDrawable(
-                                        getDrawable(R.drawable.ic_thumb_up_liked));
+                                if (value != null) {
+                                    Log.d(TAG, "Current data: " + value.size());
+                                    if (value.isEmpty()) {
+                                        cm_btnLike.setImageDrawable(
+                                                getDrawable(R.drawable.ic_thumb_up));
+                                    } else {
+                                        cm_btnLike.setImageDrawable(
+                                                getDrawable(R.drawable.ic_thumb_up_liked));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Current data: null");
+                                }
                             }
-                        } else {
-                            Log.d(TAG, "Current data: null");
-                        }
-                    }
-                });
+                        });
 
     }
 
