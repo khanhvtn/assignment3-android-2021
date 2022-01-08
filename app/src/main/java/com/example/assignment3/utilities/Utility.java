@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.assignment3.R;
 import com.example.assignment3.models.ChatRoom;
+import com.example.assignment3.models.NotificationApp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,14 @@ public class Utility {
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    static public void sendNotification(String userId, String notificationMessage,
+                                        String notificationType, Context context) {
+        Utility.firebaseFirestore.collection(context.getString(R.string.user_collection))
+                .document(userId).collection(
+                context.getString(R.string.notification_collection))
+                .add(new NotificationApp(notificationMessage, notificationType));
+    }
 
     static public void ToastMessage(String message, Context context) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);

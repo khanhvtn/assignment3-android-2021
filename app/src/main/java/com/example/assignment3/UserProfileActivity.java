@@ -241,14 +241,10 @@ public class UserProfileActivity extends AppCompatActivity {
                                             .collection(getString(R.string.following_collection))
                                             .document(userId).set(new Follower(userId));
                                     //add new notification
-                                    Utility.firebaseFirestore
-                                            .collection(getString(R.string.user_collection))
-                                            .document(userId)
-                                            .collection(getString(R.string.notification_collection))
-                                            .add(new NotificationApp(
-                                                    String.format("%s starts to follow you",
-                                                            currentUserProfile.getFullName()),
-                                                    getString(R.string.notification_post_type)));
+                                    Utility.sendNotification(userId,
+                                            String.format("%s started following you",
+                                                    currentUserProfile.getFullName()), "follower",
+                                            getApplicationContext());
                                 }
 
                             }

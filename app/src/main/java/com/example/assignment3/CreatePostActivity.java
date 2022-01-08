@@ -20,6 +20,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.assignment3.fragments.CaptureImageDialogFragment;
+import com.example.assignment3.models.Follower;
 import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
 import com.example.assignment3.utilities.Utility;
@@ -27,10 +28,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 public class CreatePostActivity extends AppCompatActivity
@@ -163,6 +166,42 @@ public class CreatePostActivity extends AppCompatActivity
                                                         Utility.ToastMessage(
                                                                 "Create Post Successfully",
                                                                 getApplicationContext());
+                                                        //send notification to all follower
+                                                        Utility.firebaseFirestore.collection(
+                                                                getString(R.string.user_collection))
+                                                                .document(Utility.firebaseAuth
+                                                                        .getCurrentUser().getUid())
+                                                                .collection(getString(
+                                                                        R.string.followers_collection))
+                                                                .get().addOnSuccessListener(
+                                                                new OnSuccessListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onSuccess(
+                                                                            QuerySnapshot queryDocumentSnapshots) {
+                                                                        if (!queryDocumentSnapshots
+                                                                                .isEmpty()) {
+                                                                            List<Follower>
+                                                                                    listFollower =
+                                                                                    queryDocumentSnapshots
+                                                                                            .toObjects(
+                                                                                                    Follower.class);
+                                                                            for (Follower follower : listFollower
+                                                                            ) {
+                                                                                Log.i(TAG, follower.getUserId());
+                                                                                String message =
+                                                                                        currentUserInfo
+                                                                                                .getFullName() +
+                                                                                                " shared a new post";
+                                                                                Utility.sendNotification(
+                                                                                        follower.getUserId(),
+                                                                                        message,
+                                                                                        "post",
+                                                                                        getApplicationContext());
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                });
                                                         loadingProgress.dismiss();
                                                         finish();
                                                     }
@@ -202,6 +241,42 @@ public class CreatePostActivity extends AppCompatActivity
                                         Utility.ToastMessage(
                                                 "Create Post Successfully",
                                                 getApplicationContext());
+                                        //send notification to all follower
+                                        Utility.firebaseFirestore.collection(
+                                                getString(R.string.user_collection))
+                                                .document(Utility.firebaseAuth
+                                                        .getCurrentUser().getUid())
+                                                .collection(getString(
+                                                        R.string.followers_collection))
+                                                .get().addOnSuccessListener(
+                                                new OnSuccessListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(
+                                                            QuerySnapshot queryDocumentSnapshots) {
+                                                        if (!queryDocumentSnapshots
+                                                                .isEmpty()) {
+                                                            List<Follower>
+                                                                    listFollower =
+                                                                    queryDocumentSnapshots
+                                                                            .toObjects(
+                                                                                    Follower.class);
+                                                            for (Follower follower : listFollower
+                                                            ) {
+                                                                Log.i(TAG, follower.getUserId());
+                                                                String message =
+                                                                        currentUserInfo
+                                                                                .getFullName() +
+                                                                                " shared a new post";
+                                                                Utility.sendNotification(
+                                                                        follower.getUserId(),
+                                                                        message,
+                                                                        "post",
+                                                                        getApplicationContext());
+                                                            }
+                                                        }
+
+                                                    }
+                                                });
                                         loadingProgress.dismiss();
                                         finish();
                                     }

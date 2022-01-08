@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.assignment3.Authentication;
 import com.example.assignment3.ChatActivity;
 import com.example.assignment3.EditProfileActivity;
+import com.example.assignment3.IMainManagement;
 import com.example.assignment3.R;
 import com.example.assignment3.homescreen.PostAdapter;
 import com.example.assignment3.models.Post;
@@ -50,6 +51,7 @@ public class CurrentUserProfile extends Fragment {
     private LinearLayoutManager mLinearLayoutManager;
     private PostAdapter postAdapter;
     private ScrollView mainScrollView;
+    private IMainManagement mainManagement;
 
     public CurrentUserProfile() {
         // Required empty public constructor
@@ -58,7 +60,9 @@ public class CurrentUserProfile extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        mainManagement = (IMainManagement) getActivity();
     }
 
     @Override
@@ -143,6 +147,7 @@ public class CurrentUserProfile extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                mainManagement.removeNotificationListener();
                 Intent intent = new Intent(getContext(), Authentication.class);
                 startActivity(intent);
             }

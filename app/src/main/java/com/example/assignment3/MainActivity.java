@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
         main_btnCreatePost = findViewById(R.id.main_btnCreatePost);
 
 
-
-
-
         //add map fragment to activity
         Fragment homeFragment = new Home();
         getSupportFragmentManager()
@@ -135,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart");
         if (Utility.firebaseAuth.getCurrentUser() != null) {
             listenerRegistrationNotification =
                     Utility.firebaseFirestore.collection(getString(R.string.user_collection))
@@ -181,6 +179,17 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
                                                 notificationManager
                                                         .notify(idNotification++,
                                                                 builder.build());
+                                                //add to notification into notification permanent collection
+                                                Utility.firebaseFirestore.collection(
+                                                        getString(R.string.user_collection))
+                                                        .document(Utility.firebaseAuth
+                                                                .getCurrentUser().getUid())
+                                                        .collection(getResources().getString(
+                                                                R.string.notificationP_collection))
+                                                        .add(new NotificationApp(
+                                                                newNotification.getMessage(),
+                                                                newNotification.getType()));
+                                                //delete new notification in general notification.
                                                 dc.getDocument().getReference().delete()
                                                         .addOnFailureListener(
                                                                 new OnFailureListener() {
@@ -232,12 +241,36 @@ public class MainActivity extends AppCompatActivity implements IMainManagement {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        listenerRegistrationNotification.remove();
+        Log.i(TAG, "onDestroy");
+        if(listenerRegistrationNotification !=null){
+            listenerRegistrationNotification.remove();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause");
+        if(listenerRegistrationNotification !=null){
+            listenerRegistrationNotification.remove();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume");
     }
 
     @Override
     public void switchToProfile() {
         itemProfile.performClick();
+    }
+
+    @Override
+    public void removeNotificationListener() {
+        listenerRegistrationNotification.remove();
     }
 
     private void createNotificationChannel() {

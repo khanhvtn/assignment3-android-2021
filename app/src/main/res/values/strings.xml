@@ -17,6 +17,7 @@
     <string name="followers_collection">followers</string>
     <string name="following_collection">followings</string>
     <string name="notification_collection">notifications</string>
+    <string name="notificationP_collection">notificationPs</string>
     <string name="notification_post_type">post</string>
     <string name="channel_user_notification">channel_user_notification</string>
     <string name="channel_user_notification_description">channel_user_notification_description</string>
