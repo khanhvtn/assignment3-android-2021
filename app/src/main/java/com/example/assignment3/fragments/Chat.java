@@ -78,7 +78,6 @@ public class Chat extends Fragment {
     private FirestoreRecyclerAdapter<Message, MessageViewHolder>
             chatAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-    private MaterialToolbar toolbar;
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser currentUser;
@@ -91,6 +90,7 @@ public class Chat extends Fragment {
     private IChatManagement listener;
     private User currentUserInfo;
     private CircleImageView imageReceiver;
+    private Boolean startFromProfile = false;
 
     public Chat() {
         // Required empty public constructor
@@ -177,8 +177,11 @@ public class Chat extends Fragment {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey,
                                                  @NonNull Bundle bundle) {
-                        // We use a String here, but any type that can be put in a Bundle is supported
                         String[] authorInfo = bundle.getStringArray("author_info");
+                        Boolean isStartFromProfile = bundle.getBoolean("startFromProfile");
+                        if (isStartFromProfile != null) {
+                            startFromProfile = isStartFromProfile;
+                        }
 
                         authorID = authorInfo[0];
                         authorName = authorInfo[1];
@@ -390,13 +393,17 @@ public class Chat extends Fragment {
 
     @SuppressLint("ClickableViewAccessibility")
     private void onClickListener() {
-
         //set listener for views
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.switchFragmentInMainActivity(
-                        new com.example.assignment3.fragments.ChatRoom());
+                if (startFromProfile) {
+                    getActivity().finish();
+                } else {
+                    listener.switchFragmentInMainActivity(
+                            new com.example.assignment3.fragments.ChatRoom());
+                }
+
             }
         });
 
@@ -463,42 +470,63 @@ public class Chat extends Fragment {
             }
         });
         edtChat.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                firebaseFirestore.collection("chats")
-                        .document(currentRoomChatID)
-                        .update(currentUser.getUid(), true)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Set current user seen!");
-                                }
-                            }
-                        });
+                if (currentRoomChatID != null) {
+                    firebaseFirestore.collection("chats")
+                            .document(currentRoomChatID).get().addOnSuccessListener(
+                            new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.getData() != null) {
+                                        firebaseFirestore.collection("chats")
+                                                .document(currentRoomChatID)
+                                                .update(currentUser.getUid(), true)
+                                                .addOnCompleteListener(
+                                                        new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(
+                                                                    @NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Log.d(TAG,
+                                                                            "Set current user seen!");
+                                                                }
+                                                            }
+                                                        });
 
-                firebaseFirestore.collection("chats")
-                        .document(currentRoomChatID)
-                        .collection("messages")
-                        .whereEqualTo("seenStatus", false)
-                        .whereEqualTo("uidSender", authorID)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Map<String, Object> seenStatus = new HashMap<>();
-                                    seenStatus.put("seenStatus", true);
-                                    if (task.getResult() != null) {
-                                        for (QueryDocumentSnapshot message : task.getResult()) {
-                                            message.getReference()
-                                                    .set(seenStatus, SetOptions.merge());
-                                        }
+                                        firebaseFirestore.collection("chats")
+                                                .document(currentRoomChatID)
+                                                .collection("messages")
+                                                .whereEqualTo("seenStatus", false)
+                                                .whereEqualTo("uidSender", authorID)
+                                                .get()
+                                                .addOnCompleteListener(
+                                                        new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(
+                                                                    @NonNull
+                                                                            Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Map<String, Object> seenStatus =
+                                                                            new HashMap<>();
+                                                                    seenStatus.put("seenStatus",
+                                                                            true);
+                                                                    if (task.getResult() != null) {
+                                                                        for (QueryDocumentSnapshot message : task
+                                                                                .getResult()) {
+                                                                            message.getReference()
+                                                                                    .set(seenStatus,
+                                                                                            SetOptions
+                                                                                                    .merge());
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
                                     }
                                 }
-                            }
-                        });
+                            });
+                }
                 return false;
             }
         });
@@ -520,7 +548,6 @@ public class Chat extends Fragment {
 
     private void openRoomChat(Uri uri) {
 
-
         /**
          * Query 50 most recent chat messages
          * */
@@ -529,7 +556,7 @@ public class Chat extends Fragment {
                 .document(currentRoomChatID)
                 .collection("messages")
                 .orderBy("timestamp")
-                .limitToLast(50);
+                .limitToLast(100);
 
         /**
          * Add SnapshotListener to get message in realtime

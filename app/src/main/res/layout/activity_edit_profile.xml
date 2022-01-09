@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_icon_border"
+        android:padding="5dp"
+        android:src="@drawable/ic_arrow_back" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_userAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/gradient_bg"
+                android:padding="2dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/rounded_icon"
+                    android:backgroundTint="@color/black"
+                    android:padding="3dp"
+                    android:src="@drawable/avatar_placeholder" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnChangeAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_userAvatar"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button"
+                android:backgroundTint="@color/secondary"
+                android:paddingHorizontal="20dp"
+                android:text="Change Profile Photo" />
+        </RelativeLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_person_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_location_city"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtBio"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_quote_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Bio"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/primary"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="Update" />
+    </LinearLayout>
+
+</RelativeLayout>

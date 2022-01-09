@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerInParent="true">
-
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/main_bottomNavigationBar"
                 android:layout_width="match_parent"
@@ -57,12 +56,13 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:padding="10dp"
             android:id="@+id/main_btnCreatePost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@color/white"
-            android:src="@drawable/ic_plus_bottom_nav" />
+            android:background="@drawable/gradient_bg"
+            android:src="@drawable/ic_add_post" />
     </RelativeLayout>
 
 

@@ -10,9 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Assignment3">
         <activity
-            android:windowSoftInputMode="adjustPan"
-            android:name=".CommentActivity"
+            android:name=".EditPostActivity"
             android:exported="false" />
+        <activity
+            android:name=".ListFollowerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreatePostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CommentActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

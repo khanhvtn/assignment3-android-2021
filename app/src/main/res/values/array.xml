@@ -4,4 +4,8 @@
         <item>Camera</item>
         <item>Photo</item>
     </array>
+    <array name="post_options">
+        <item>Edit</item>
+        <item>Delete</item>
+    </array>
 </resources>

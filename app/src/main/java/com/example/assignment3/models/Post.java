@@ -4,52 +4,45 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 public class Post {
-    private String posterId,posterImageFileName,posterName, textContent, imageContentFileName;
+    private String userId, postId, textContent,
+            imageContentFileName;
     private Date timestamp;
 
     public Post() {
     }
 
-    public Post(String posterId, String posterImageFileName, String posterName,
-                String textContent, String imageContentFileName, Date timestamp) {
-        this.posterId = posterId;
-        this.posterImageFileName = posterImageFileName;
-        this.posterName = posterName;
+    public Post(String userId,
+                @Nullable String textContent, @Nullable String imageContentFileName) {
+        this.userId = userId;
         this.textContent = textContent;
         this.imageContentFileName = imageContentFileName;
-        this.timestamp = timestamp;
     }
 
-    public String getPosterId() {
-        return posterId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPosterId(String posterId) {
-        this.posterId = posterId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getPosterImageFileName() {
-        return posterImageFileName;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPosterImageFileName(String posterImageFileName) {
-        this.posterImageFileName = posterImageFileName;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public String getPosterName() {
-        return posterName;
-    }
-
-    public void setPosterName(String posterName) {
-        this.posterName = posterName;
-    }
 
     public String getTextContent() {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
+    public void setTextContent(@Nullable String textContent) {
         this.textContent = textContent;
     }
 
@@ -57,7 +50,7 @@ public class Post {
         return imageContentFileName;
     }
 
-    public void setImageContentFileName(String imageContentFileName) {
+    public void setImageContentFileName(@Nullable String imageContentFileName) {
         this.imageContentFileName = imageContentFileName;
     }
 

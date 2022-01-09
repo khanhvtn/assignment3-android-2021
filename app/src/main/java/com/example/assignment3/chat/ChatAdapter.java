@@ -79,7 +79,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHo
              * */
             Log.i(TAG, "Set Icon for Message Left");
             if (imageReceiverUri != null) {
-                Glide.with(context)
+                Glide.with(context.getApplicationContext())
                         .load(imageReceiverUri)
                         .into(messageViewHolder.messengerIcon);
             }
@@ -102,7 +102,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHo
                     new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Glide.with(context).load(uri).into(messageViewHolder.messageImage);
+                            Glide.with(context.getApplicationContext()).load(uri).into(messageViewHolder.messageImage);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override

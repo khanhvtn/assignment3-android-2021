@@ -14,11 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.example.assignment3.CommentActivity;
 import com.example.assignment3.R;
+import com.example.assignment3.UserProfileActivity;
 import com.example.assignment3.models.Comment;
 import com.example.assignment3.models.Like;
-import com.example.assignment3.models.Post;
 import com.example.assignment3.models.User;
 import com.example.assignment3.utilities.Utility;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -75,7 +74,8 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentVie
                                             new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri) {
-                                                    Glide.with(context).load(uri)
+                                                    Glide.with(context.getApplicationContext())
+                                                            .load(uri)
                                                             .into(viewHolder.imagePoster);
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
@@ -88,6 +88,24 @@ public class CommentAdapter extends FirestoreRecyclerAdapter<Comment, CommentVie
                         }
                         viewHolder.namePoster
                                 .setText(targetUser.getFullName());
+                        viewHolder.namePoster
+                                .setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        //not profile
+                                        if (!Utility.firebaseAuth.getCurrentUser().getUid()
+                                                .equals(comment.getUserId())) {
+                                            Intent intent =
+                                                    new Intent(context.
+                                                            getApplicationContext(),
+                                                            UserProfileActivity.class);
+                                            intent.putExtra("userId",
+                                                    documentSnapshot.getId());
+                                            context.startActivity(intent);
+                                        }
+
+                                    }
+                                });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

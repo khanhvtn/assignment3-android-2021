@@ -112,7 +112,7 @@ public class ChatRoomAdapter extends FirestoreRecyclerAdapter<ChatRoom, ChatRoom
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Glide.with(chatRoomViewHolder.imageChatRoomAdapter
-                                                        .getContext())
+                                                        .getContext().getApplicationContext())
                                                         .load(uri)
                                                         .into(chatRoomViewHolder.imageChatRoomAdapter);
                                             }

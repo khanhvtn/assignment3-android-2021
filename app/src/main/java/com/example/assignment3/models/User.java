@@ -3,7 +3,8 @@ package com.example.assignment3.models;
 import java.util.ArrayList;
 
 public class User {
-    private String fullName, email, address;
+    private String userId, fullName, email, address;
+    private String bio = "";
     private String imageFileName = null;
     private ArrayList<String> followers = new ArrayList<>();
     private ArrayList<String> following = new ArrayList<>();
@@ -11,10 +12,27 @@ public class User {
     public User() {
     }
 
-    public User(String fullName, String email, String address) {
+    public User(String userId, String fullName, String email, String address) {
+        this.userId = userId;
         this.fullName = fullName;
         this.email = email;
         this.address = address;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getFullName() {
