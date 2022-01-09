@@ -141,14 +141,36 @@ public class NotificationCenterAdapter
             public void onClick(View view) {
                 Intent intent;
                 if (notification.getType().equals("post")) {
-                    intent = new Intent(context, CommentActivity.class);
-                    intent.putExtra("postId", notification.getTargetId());
-                    context.startActivity(intent);
+                    //check post is exists or not
+                    Utility.firebaseFirestore
+                            .collection(context.getString(R.string.post_collection))
+                            .document(notification.getTargetId()).get().addOnSuccessListener(
+                            new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Intent intent;
+                                    if (documentSnapshot.getData() != null) {
+                                        intent = new Intent(context, CommentActivity.class);
+                                        intent.putExtra("postId", notification.getTargetId());
+                                        context.startActivity(intent);
+                                    } else {
+                                        Utility.ToastMessage("This post no longer exists", context);
+                                    }
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+
                 } else {
                     intent = new Intent(context, UserProfileActivity.class);
                     intent.putExtra("userId", notification.getTargetId());
                     context.startActivity(intent);
                 }
+
             }
         });
 

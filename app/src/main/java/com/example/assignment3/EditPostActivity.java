@@ -266,51 +266,80 @@ public class EditPostActivity extends AppCompatActivity
                                 }
                             });
                         }
-
                     } else {
-                        currentPostInfo.setImageContentFileName(null);
-                        Utility.firebaseStorage.getReference()
-                                .child("images/" + currentPostInfo.getImageContentFileName())
-                                .delete().addOnSuccessListener(
-                                new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Utility.firebaseFirestore
-                                                .collection(getString(R.string.post_collection))
-                                                .document(postId)
-                                                .set(currentPostInfo, SetOptions.merge())
-                                                .addOnSuccessListener(
-                                                        new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void unused) {
-                                                                Utility.ToastMessage(
-                                                                        "Update Post Successfully",
-                                                                        getApplicationContext());
-                                                                loadingProgress.dismiss();
-                                                                finish();
-                                                            }
-                                                        })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.i(TAG, e.getMessage());
-                                                        Utility.ToastMessage(
-                                                                "Something went wrong. Please try again",
-                                                                getApplicationContext());
-                                                        loadingProgress.dismiss();
-                                                    }
-                                                });
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.i(TAG, e.getMessage());
-                                Utility.ToastMessage(
-                                        "Something went wrong. Please try again",
-                                        getApplicationContext());
-                                loadingProgress.dismiss();
-                            }
-                        });
+                        if (currentPostInfo.getImageContentFileName() == null) {
+                            Utility.firebaseFirestore
+                                    .collection(getString(R.string.post_collection))
+                                    .document(postId)
+                                    .set(currentPostInfo, SetOptions.merge())
+                                    .addOnSuccessListener(
+                                            new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Utility.ToastMessage(
+                                                            "Update Post Successfully",
+                                                            getApplicationContext());
+                                                    loadingProgress.dismiss();
+                                                    finish();
+                                                }
+                                            })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.i(TAG, e.getMessage());
+                                            Utility.ToastMessage(
+                                                    "Something went wrong. Please try again",
+                                                    getApplicationContext());
+                                            loadingProgress.dismiss();
+                                        }
+                                    });
+                        } else {
+                            Utility.firebaseStorage.getReference()
+                                    .child("images/" + currentPostInfo.getImageContentFileName())
+                                    .delete().addOnSuccessListener(
+                                    new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            currentPostInfo.setImageContentFileName(null);
+                                            Utility.firebaseFirestore
+                                                    .collection(getString(R.string.post_collection))
+                                                    .document(postId)
+                                                    .set(currentPostInfo, SetOptions.merge())
+                                                    .addOnSuccessListener(
+                                                            new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    Utility.ToastMessage(
+                                                                            "Update Post Successfully",
+                                                                            getApplicationContext());
+                                                                    loadingProgress.dismiss();
+                                                                    finish();
+                                                                }
+                                                            })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(
+                                                                @NonNull Exception e) {
+                                                            Log.i(TAG, e.getMessage());
+                                                            Utility.ToastMessage(
+                                                                    "Something went wrong. Please try again",
+                                                                    getApplicationContext());
+                                                            loadingProgress.dismiss();
+                                                        }
+                                                    });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.i(TAG, e.getMessage());
+                                    Utility.ToastMessage(
+                                            "Something went wrong. Please try again",
+                                            getApplicationContext());
+                                    loadingProgress.dismiss();
+                                }
+                            });
+                        }
+
 
                     }
 

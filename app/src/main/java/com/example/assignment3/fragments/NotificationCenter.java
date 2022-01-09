@@ -48,7 +48,7 @@ public class NotificationCenter extends Fragment {
         Query query = Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                 .document(Utility.firebaseAuth.getCurrentUser().getUid())
                 .collection(getString(R.string.notificationP_collection))
-                .orderBy("timestamp").limitToLast(100);
+                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
         FirestoreRecyclerOptions<NotificationApp> options =
                 new FirestoreRecyclerOptions.Builder<NotificationApp>()
                         .setQuery(query, NotificationApp.class)
@@ -56,13 +56,14 @@ public class NotificationCenter extends Fragment {
                         .build();
 
         notificationCenterAdapter = new NotificationCenterAdapter(options, getContext());
-        notificationCenterAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver(){
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                rv_notifications.scrollToPosition(0);
-            }
-        });
+        notificationCenterAdapter
+                .registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        super.onItemRangeInserted(positionStart, itemCount);
+                        rv_notifications.scrollToPosition(0);
+                    }
+                });
         rv_notifications.setAdapter(notificationCenterAdapter);
         return v;
     }
@@ -70,6 +71,6 @@ public class NotificationCenter extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mainManagement.switchFragmentInMainActivity(new NotificationCenter());
+        rv_notifications.setAdapter(notificationCenterAdapter);
     }
 }

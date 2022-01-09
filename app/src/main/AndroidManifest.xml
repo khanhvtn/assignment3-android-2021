@@ -27,7 +27,7 @@
         <activity
             android:name=".CommentActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

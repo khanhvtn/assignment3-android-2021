@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class Home extends Fragment {
     private AppCompatImageButton home_btnMessages;
     private IMainManagement listener;
     private ScrollView mainScrollView;
+    private AppCompatTextView noPostTitle;
 
     public Home() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class Home extends Fragment {
         home_rvPost.setLayoutManager(mLinearLayoutManager);
         home_btnMessages = view.findViewById(R.id.home_btnMessages);
         mainScrollView = view.findViewById(R.id.mainScrollView);
+        noPostTitle = view.findViewById(R.id.noPostTitle);
 
         //get list following
         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
@@ -84,36 +87,44 @@ public class Home extends Fragment {
                         ) {
                             followerIdList.add(follower.getUserId());
                         }
+                        if (followerIdList.size() == 0) {
+                            mainScrollView.setVisibility(View.GONE);
+                            noPostTitle.setVisibility(View.VISIBLE);
+                        } else {
+                            mainScrollView.setVisibility(View.VISIBLE);
+                            noPostTitle.setVisibility(View.GONE);
+                            //create query
+                            Query query = Utility.firebaseFirestore
+                                    .collection(getString(R.string.post_collection))
+                                    .whereIn("userId", followerIdList)
+                                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                                    .limitToLast(100);
 
-                        //create query
-                        Query query = Utility.firebaseFirestore
-                                .collection(getString(R.string.post_collection))
-                                .whereIn("userId", followerIdList)
-                                .orderBy("timestamp", Query.Direction.DESCENDING).limitToLast(100);
-
-                        // Configure recycler adapter options:
-                        //  * query is the Query object defined above.
-                        //  * Chat.class instructs the adapter to convert each DocumentSnapshot to a Chat object
-                        FirestoreRecyclerOptions<Post> options =
-                                new FirestoreRecyclerOptions.Builder<Post>()
-                                        .setQuery(query, Post.class)
-                                        .setLifecycleOwner(getViewLifecycleOwner())
-                                        .build();
-                        postAdapter = new PostAdapter(options, getContext(), listener, false, null);
-                        //scroll to newest post
-                        postAdapter.registerAdapterDataObserver(
-                                new RecyclerView.AdapterDataObserver() {
-                                    @Override
-                                    public void onItemRangeInserted(int positionStart,
-                                                                    int itemCount) {
-                                        super.onItemRangeInserted(positionStart, itemCount);
-                                        home_rvPost.scrollToPosition(0);
-                                        mainScrollView.scrollTo(0, 0);
-                                    }
-                                });
-                        //set adapter and layout manager for RecyclerView
-                        home_rvPost.setAdapter(postAdapter);
-                        mainScrollView.scrollTo(0, 0);
+                            // Configure recycler adapter options:
+                            //  * query is the Query object defined above.
+                            //  * Chat.class instructs the adapter to convert each DocumentSnapshot to a Chat object
+                            FirestoreRecyclerOptions<Post> options =
+                                    new FirestoreRecyclerOptions.Builder<Post>()
+                                            .setQuery(query, Post.class)
+                                            .setLifecycleOwner(getViewLifecycleOwner())
+                                            .build();
+                            postAdapter =
+                                    new PostAdapter(options, getContext(), listener, false, null);
+                            //scroll to newest post
+                            postAdapter.registerAdapterDataObserver(
+                                    new RecyclerView.AdapterDataObserver() {
+                                        @Override
+                                        public void onItemRangeInserted(int positionStart,
+                                                                        int itemCount) {
+                                            super.onItemRangeInserted(positionStart, itemCount);
+                                            home_rvPost.scrollToPosition(0);
+                                            mainScrollView.scrollTo(0, 0);
+                                        }
+                                    });
+                            //set adapter and layout manager for RecyclerView
+                            home_rvPost.setAdapter(postAdapter);
+                            mainScrollView.scrollTo(0, 0);
+                        }
 
 
                         //set listener
@@ -136,11 +147,12 @@ public class Home extends Fragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "OnResume");
-        listener.switchFragmentInMainActivity(new Home());
+        home_rvPost.setAdapter(postAdapter);
     }
 
     @Override

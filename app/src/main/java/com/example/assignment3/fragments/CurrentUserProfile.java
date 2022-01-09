@@ -198,10 +198,17 @@ public class CurrentUserProfile extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "OnStart");
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "OnResume");
-        mainManagement.switchFragmentInMainActivity(new CurrentUserProfile());
+        UpdateUserInfo();
+        rv_userPost.setAdapter(postAdapter);
     }
 
     @Override

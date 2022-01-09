@@ -47,7 +47,7 @@ public class PostAdapter extends FirestoreRecyclerAdapter<Post, PostViewHolder> 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private IMainManagement listener;
-    private Boolean isCurrentUserProfile;
+    private Boolean isCurrentUserProfile = false;
     private FragmentManager fragmentManager;
 
 

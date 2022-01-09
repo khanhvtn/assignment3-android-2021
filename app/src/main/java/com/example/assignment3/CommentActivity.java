@@ -97,6 +97,9 @@ public class CommentActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Post targetPost = documentSnapshot.toObject(Post.class);
+                        if (targetPost == null){
+                            return;
+                        }
                         //set poster image
                         Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                                 .document(targetPost.getUserId()).get().addOnSuccessListener(
