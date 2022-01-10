@@ -182,6 +182,8 @@ public class Home extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "OnDestroy");
-        registration.remove();
+        if(registration != null){
+            registration.remove();
+        }
     }
 }
