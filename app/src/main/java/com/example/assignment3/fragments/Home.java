@@ -27,6 +27,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -42,6 +43,7 @@ public class Home extends Fragment {
     private IMainManagement listener;
     private ScrollView mainScrollView;
     private AppCompatTextView noPostTitle;
+    private ListenerRegistration registration;
 
     public Home() {
         // Required empty public constructor
@@ -124,6 +126,27 @@ public class Home extends Fragment {
                             //set adapter and layout manager for RecyclerView
                             home_rvPost.setAdapter(postAdapter);
                             mainScrollView.scrollTo(0, 0);
+
+                            /**
+                             * Add SnapshotListener to get chat rooms in realtime
+                             * */
+                            registration = query.addSnapshotListener((snapshot, error) -> {
+                                if (error != null) {
+                                    //Handle error
+                                    return;
+                                }
+                                //Convert query snapshot to a list of follower
+                                List<Post> postList =
+                                        snapshot.toObjects(Post.class);
+                                //Update UI
+                                if (postList.isEmpty()) {
+                                    mainScrollView.setVisibility(View.GONE);
+                                    noPostTitle.setVisibility(View.VISIBLE);
+                                } else {
+                                    mainScrollView.setVisibility(View.VISIBLE);
+                                    noPostTitle.setVisibility(View.GONE);
+                                }
+                            });
                         }
 
 
@@ -159,5 +182,6 @@ public class Home extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "OnDestroy");
+        registration.remove();
     }
 }

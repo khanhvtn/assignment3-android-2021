@@ -72,19 +72,6 @@ public class ChatRoom extends Fragment {
         //get listener
         listener = (IChatManagement) getActivity();
 
-//        toolbar = findViewById(R.id.topBarChatRoom);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//                ChatRoomActivity.this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-//            }
-//        });
-//
-//        //set Title Name
-//        toolbarUserNameChatRoom = findViewById(R.id.toolbarUserNameChatRoom);
-//        toolbarUserNameChatRoom.setText(currentUser.getEmail());
-
 
     }
 
