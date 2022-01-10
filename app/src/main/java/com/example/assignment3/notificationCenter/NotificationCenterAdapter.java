@@ -112,7 +112,7 @@ public class NotificationCenterAdapter
 
             if (groupDates.containsKey(newGroupDate)) {
                 Date oldestDate = groupDates.get(newGroupDate);
-                if (oldestDate.compareTo(notification.getTimestamp()) == 1) {
+                if (oldestDate.compareTo(notification.getTimestamp()) == -1) {
                     viewHolder.groupDate.setVisibility(View.VISIBLE);
                     //update group date
                     groupDates.put(newGroupDate, notification.getTimestamp());
