@@ -134,16 +134,15 @@ public class MainActivity extends AppCompatActivity implements IMainManagement,
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart");
-        //add map fragment to activity
-        Fragment homeFragment = new Home();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.main_fragmentContainer, homeFragment,
-                        homeFragment.getClass().toString())
-                .commit();
-
         if (Utility.firebaseAuth.getCurrentUser() != null) {
+            //add map fragment to activity
+            Fragment homeFragment = new Home();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.main_fragmentContainer, homeFragment,
+                            homeFragment.getClass().toString())
+                    .commit();
             listenerRegistrationNotification =
                     Utility.firebaseFirestore.collection(getString(R.string.user_collection))
                             .document(Utility.firebaseAuth.getCurrentUser().getUid())
