@@ -78,15 +78,6 @@ public class MainActivity extends AppCompatActivity implements IMainManagement,
         main_btnCreatePost = findViewById(R.id.main_btnCreatePost);
 
 
-        //add map fragment to activity
-        Fragment homeFragment = new Home();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.main_fragmentContainer, homeFragment,
-                        homeFragment.getClass().toString())
-                .commit();
-
 
         //declare fields
         AppCompatButton btnLogout = findViewById(R.id.main_btnLogout);
@@ -143,6 +134,15 @@ public class MainActivity extends AppCompatActivity implements IMainManagement,
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart");
+        //add map fragment to activity
+        Fragment homeFragment = new Home();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.main_fragmentContainer, homeFragment,
+                        homeFragment.getClass().toString())
+                .commit();
+
         if (Utility.firebaseAuth.getCurrentUser() != null) {
             listenerRegistrationNotification =
                     Utility.firebaseFirestore.collection(getString(R.string.user_collection))
