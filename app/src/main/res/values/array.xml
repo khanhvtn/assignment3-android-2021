@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="capture_image_options">
+        <item>Camera</item>
+        <item>Photo</item>
+    </array>
+    <array name="post_options">
+        <item>Edit</item>
+        <item>Delete</item>
+    </array>
+</resources>

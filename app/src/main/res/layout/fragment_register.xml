@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.Register">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="30dp"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_edtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_person_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_email_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_lock_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_edtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/custom_location_city"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="text"
+            android:paddingHorizontal="20dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/register_btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/primary"
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="Register" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/register_btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/browser_actions_bg_grey"
+            android:padding="10dp"
+            android:text="Login" />
+    </LinearLayout>
+
+</RelativeLayout>
